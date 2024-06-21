@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,18 +21,25 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <header>
-            <SignedOut>
-              <SignInButton>
-                <Button className="ml-4">Sign In</Button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>      
-            </SignedIn>
-          </header>
-          <main>
-            {children}
-          </main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <header>
+              <SignedOut>
+                <SignInButton>
+                  <Button className="ml-4">Sign In</Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>      
+              </SignedIn>
+            </header>
+            <main>
+              {children}
+            </main>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
