@@ -2,12 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-
+import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Top Navigation Bar */}
-      <div className="flex items-center justify-between p-4 bg-gray-900">
+      <div className="flex items-center justify-between p-4 bg-black-900 w-full border-4 border-white-500">
         <div className="flex space-x-4">
           <Button variant="ghost" className="text-white">Discover</Button>
           <Button variant="ghost" className="text-white">Genres</Button>
@@ -25,11 +25,20 @@ export default function Home() {
       </div>
       {/* Page Content */}
       <div className="flex flex-col items-center justify-center flex-grow">
-        <h1 className="text-5xl font-bold mb-4 relative">Watchlisted</h1>
-        <h3 className="text-3xl font-bold mb-4 relative">
+        <h1 className="text-5xl font-bold mb-4 relative right-60 ">Watchlisted</h1>
+        <h3 className="text-3xl font-bold mb-4 relative right-60">
           Your Personalized TV Recommendations
         </h3>
-        <Button variant="default" className="mt-4 relative">Read More</Button>
+        <Link href="/more.tsx">
+        <Button variant="default" className="mt-4 relative right-60">Read More</Button>
+        </Link>
+        <Image
+          src="/next.svg"
+          width={348}
+          height={278}
+          alt="home page icon"
+          className="mb-4 relative left-60" 
+        />
       </div>
     </div>
   );
