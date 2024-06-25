@@ -29,11 +29,11 @@ export default function Home() {
         <h3 className="text-3xl font-bold mb-4 relative right-60">
           Your Personalized TV Recommendations
         </h3>
-        <Link href="/more.tsx">
+        <Link href="/more">
         <Button variant="default" className="mt-4 relative right-60">Read More</Button>
         </Link>
         <Image
-          src="/next.svg"
+          src="/next"
           width={348}
           height={278}
           alt="home page icon"
