@@ -11,7 +11,7 @@ from nltk.tokenize import word_tokenize
 import logging
 from typing import List
 
-MAX_FEATURES = 75000
+MAX_FEATURES = 150000
 TEST_SIZE = 0.2
 RANDOMNESS = 42
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +23,7 @@ nltk.download('stopwords', quiet=True)
 
 
 def main():
-    shows = pd.read_csv('TMDB_tv_dataset_v3.csv')
+    shows = pd.read_csv('backend\TMDB_tv_dataset_v3.csv')
     logger.info("Data loaded successfully")
     logger.info(f"shape of the dataset {shows.shape}")
     shows.drop_duplicates(inplace=True)
