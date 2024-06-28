@@ -1,44 +1,67 @@
+#Reads "TMDB_tv_dataset_v3.csv" and filters out undesired columns
+
+import pandas as pd
 import csv
 
-inFile = 'TMDB_tv_dataset_v3.csv'
-outFile = 'shows.csv'
-
-# Function to read CSV file and return list of dictionaries
-def read_csv(inFile):
-    data = []
-    with open(inFile, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            data.append(row)
-    return data
-
-#Cleans data and keeps desired columns
-def clean_and_filter_columns(data):
-    desired_columns = ['id', 'name', 'overview', 'genres', 'number_of_seasons',
-                       'number_of_episodes', 'first_air_date', 'last_air_date',
-                       'networks', 'vote_average', 'languages']
+#Splits and cleans a comma-separated string into a list of strings
+def clean_split(text):
+    if pd.isna(text):
+        return []
+    else:
+        return [item.strip() for item in text.split(',')]
     
-    cleaned_data = []
-    for row in data:
-        cleaned_row = {col: row[col] for col in desired_columns if col in row}
-        cleaned_data.append(cleaned_row)
-    
-    return cleaned_data
+#Checks if a string contains only ASCII characters
+def is_ascii(text):
+    try:
+        return text.isascii()
+    except AttributeError:
+        return False
 
-# Function to write modified data back to CSV
-def write_csv(data, outFile):
-    fieldnames = data[0].keys()
-    with open(outFile, 'w', newline='', encoding='utf-8') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in data:
-            writer.writerow(row)
 
-# Read CSV file
-data = read_csv(inFile)
+df = pd.read_csv('TMDB_tv_dataset_v3.csv')
 
-cleaned_data = clean_and_filter_columns(data)
+#Selects necessary columns and renames 'id' column to 'showid' in dataframe
+df = df[['id', 'name', 'overview', 'genres', 'number_of_seasons', 'number_of_episodes', 
+         'first_air_date', 'last_air_date', 'networks', 'vote_average', 'languages']].rename(columns={'id': 'showid'})
 
-write_csv(cleaned_data, outFile)
+#Replaces specific genre names using a dictionary
+genre_replacements = {
+    'Action & Adventure': 'Action',
+    'Animation': 'Anime',
+    'Sci-Fi & Fantasy': 'Sci-Fi'
+}
+df['genres'] = df['genres'].replace(genre_replacements, regex=True)
 
-print(f'Modified CSV file saved as {outFile}')
+#Filters out shows with a rating of 0.0
+df = df[df['vote_average'] != 0.0]
+
+#Ensures that 'name' and 'overview' columns contain only ASCII characters
+df = df[df['name'].apply(is_ascii) & df['overview'].apply(is_ascii)]
+
+#Replaces NaN or null values in the 'languages' column with 'en'
+df['languages'] = df['languages'].fillna('en')
+
+#Replaces NaN or null values in the dataframe with an empty string
+df = df.fillna(' ')
+
+#Removes newline and carriage return characters from the 'overview' column
+df.iloc[:, 3] = df.iloc[:, 7].str.replace('\n', ' ').str.replace('\r', ' ')
+
+#Defines columns to apply clean_split function
+columns_to_split = ['genres', 'networks', 'languages']
+
+#Applies clean_split function to each column in columns_to_split
+for col in columns_to_split:
+    df[col] = df[col].apply(clean_split)
+
+#Adds new autoincrementing 'id' column
+df.insert(0, 'id', range(1, 1 + len(df)))
+
+#Saves the modified DataFrame to a new CSV file with custom quoting
+with open('final.csv', mode='w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC)
+    writer.writerow(df.columns)
+    for row in df.itertuples(index=False, name=None):
+        if any(str(attr).strip() == '' for attr in row[:-1]):
+            continue
+        writer.writerow(row)

@@ -14,8 +14,8 @@ datasource db {
 }
 
 model Show {
-  id          String   @id @default(cuid())
-  showId      String   @unique
+  id          Int   @id 
+  showId      Int   @unique
   name        String
   overview    String
   genres      String[]
@@ -27,4 +27,3 @@ model Show {
   rating      Float
   languages   String[]
 }
-
