@@ -2,10 +2,15 @@ import { NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import path from 'path';
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
-    const { movieName } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const movieName = searchParams.get('movieName');
     console.log(`Received movie name: ${movieName}`);
+
+    if (!movieName) {
+      return NextResponse.json({ error: "Movie name is required" }, { status: 400 });
+    }
 
     return new Promise((resolve, reject) => {
       const scriptPath = path.join(process.cwd(), 'backend', 'recommendations.py');

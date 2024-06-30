@@ -13,12 +13,8 @@ const MakeCallForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("/api/getRecommendations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ movieName })
+      const response = await fetch(`/api/getRecommendations?movieName=${encodeURIComponent(movieName)}`, {
+        method: "GET",
       });
 
       if (!response.ok) {
