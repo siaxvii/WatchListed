@@ -5,7 +5,7 @@ import pandas as pd
 df = pd.read_csv('final.csv')
 
 #Selects necessary columns
-df = df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]]
+df = df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]
 
 #Filters TV shows with a rating of 0.0
 df = df[df.iloc[:, 10] != 0.0]
@@ -24,10 +24,10 @@ def format_insert(row):
     if any(str(attr).strip() == '' for attr in row[:-1]):  #Checking all columns except the last one (languages)
         return None
     
-    name = row[2].replace("'", "").replace('"', "")
-    overview = row[3].replace("'", "").replace('"', "")
+    name = row[2].replace("'", "''").replace('"', "")
+    overview = row[3].replace("'", "''").replace('"', "")
     #Constructs the SQL INSERT INTO statement
-    values = f"({row[0]}, {row[1]}, '{name}','{overview}', ARRAY{row[4]}, {row[5]}, {row[6]}, '{row[7]}'::timestamp, '{row[8]}'::timestamp, ARRAY{row[9]}, {row[10]}, ARRAY{row[11]}),"
+    values = f"({row[0]}, {row[1]}, '{name}','{overview}', ARRAY{row[4]}, {row[5]}, {row[6]}, '{row[7]}'::timestamp, '{row[8]}'::timestamp, ARRAY{row[9]}, {row[10]}, ARRAY{row[11]}, '{row[12]}'),"
     return values
 
 #Applies the formatting function to each row and join them into a single string
@@ -37,7 +37,7 @@ insert_values = '\n'.join(filter(None, df.apply(format_insert, axis=1)))
 insert_values = insert_values.rstrip(',')
 
 #Adds a semicolon at the end to complete SQL INSERT statement
-sql_insert = f"INSERT INTO shows (id, showid, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, rating, languages) VALUES\n{insert_values};"
+sql_insert = f"INSERT INTO shows (id, showid, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, rating, languages, backdroppath) VALUES\n{insert_values};"
 
 output_file = 'sql_inserts.txt'
 

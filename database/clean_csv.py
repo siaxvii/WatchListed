@@ -22,7 +22,7 @@ df = pd.read_csv('TMDB_tv_dataset_v3.csv')
 
 #Selects necessary columns and renames 'id' column to 'showid' in dataframe
 df = df[['id', 'name', 'overview', 'genres', 'number_of_seasons', 'number_of_episodes', 
-         'first_air_date', 'last_air_date', 'networks', 'vote_average', 'languages']].rename(columns={'id': 'showid'})
+         'first_air_date', 'last_air_date', 'networks', 'vote_average', 'languages', 'backdrop_path']].rename(columns={'id': 'showid'})
 
 #Replaces specific genre names using a dictionary
 genre_replacements = {
@@ -53,6 +53,9 @@ columns_to_split = ['genres', 'networks', 'languages']
 #Applies clean_split function to each column in columns_to_split
 for col in columns_to_split:
     df[col] = df[col].apply(clean_split)
+
+# Removes newline and carriage return characters from the 'overview' column
+df['overview'] = df['overview'].str.replace('\n', ' ').str.replace('\r', ' ')
 
 #Adds new autoincrementing 'id' column
 df.insert(0, 'id', range(1, 1 + len(df)))
