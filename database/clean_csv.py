@@ -45,7 +45,7 @@ df['languages'] = df['languages'].fillna('en')
 df = df.fillna(' ')
 
 #Removes newline and carriage return characters from the 'overview' column
-df.iloc[:, 3] = df.iloc[:, 7].str.replace('\n', ' ').str.replace('\r', ' ')
+df['overview'] = df['overview'].str.replace('\n', ' ').str.replace('\r', ' ')
 
 #Defines columns to apply clean_split function
 columns_to_split = ['genres', 'networks', 'languages']
