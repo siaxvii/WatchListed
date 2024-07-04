@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
-import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 import NavBar from "@/components/navbar";
 
 export default function Home() {

@@ -28,13 +28,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <header>
-              <SignedOut>
-                <SignInButton>
-                  <Button className="ml-4">Sign In</Button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>      
-              </SignedIn>
             </header>
             <main>
               {children}
