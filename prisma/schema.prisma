@@ -15,15 +15,15 @@ datasource db {
 
 model Show {
   id          Int   @id 
-  showId      Int   @unique
   name        String
   overview    String
   genres      String[]
-  numSeason   Int
-  numEpisodes Int
-  firstAired  DateTime
-  lastAired   DateTime
+  numseason   Int
+  numepisodes Int
+  firstaired  DateTime
+  lastaired   DateTime
   networks    String[]
   rating      Float
   languages   String[]
+  backgroundpath String
 }
