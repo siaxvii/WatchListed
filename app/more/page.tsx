@@ -4,27 +4,16 @@ import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
+import NavBar from "@/components/navbar";
 export default function More() {
   
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Top Navigation Bar */}
-      <div className="flex items-center justify-between p-4 bg-black-900 w-full border-4 border-white-500">
-        <div className="flex space-x-4">
-          <Button variant="ghost" className="text-white">Discover</Button>
-          <Button variant="ghost" className="text-white">Genres</Button>
-          <Button variant="ghost" className="text-white">Top Rated</Button>
-          <Button variant="ghost" className="text-white">Recommended</Button>
-        </div>
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="px-3 py-2 rounded text-black"
-          />
-          <UserButton />
-        </div>
+      <div className="bg-black">
+      <NavBar />
+      <UserButton />
       </div>
         {/* Stats Section */}
         <div className="w-full bg-gray-800 p-4 flex justify-around items-center">
