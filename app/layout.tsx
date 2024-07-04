@@ -39,8 +39,10 @@ export default function RootLayout({
             <main>
               {children}
             </main>
+            <footer>© 2024 WatchListed, Inc. All rights reserved.</footer>
           </ThemeProvider>
         </body>
+        
       </html>
     </ClerkProvider>
   );
