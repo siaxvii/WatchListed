@@ -11,7 +11,6 @@ export default function Home() {
       {/* Top Navigation Bar */}
       <div className="bg-black">
       <NavBar />
-      <UserButton />
       </div>
       {/* Page Content */}
       <div className="flex flex-col items-center justify-center flex-grow">
