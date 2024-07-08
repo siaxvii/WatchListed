@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Show {
+model show {
   id          Int   @id 
   name        String
   overview    String
