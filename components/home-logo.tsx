@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from'next/link';
-//remember, NO a tags
 
-const Logo: React.FC = () => {
+const Logo = () => {
     return (
-        <div className='flex items-center'>
+        <div className=''>
             <Link href="/">
-                <img src = "images/logo.png" alt="Logo" className='h-14 w-auto cursor-pointer'/>
+                <img src = "images/file.png" alt="Logo" className='h-12 cursor-pointer'/>
             </Link>
         </div>
     );
