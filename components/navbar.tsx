@@ -8,7 +8,7 @@ import NavbarActions from "./navbar-actions";
 
 const Navbar = async () => {
   return (
-    <div className="border-b border-white">
+    <div className="border-b border-white bg-zinc-950">
       <div className="sm:px-6 lg:px-8 flex h-20 items-center">
         <Logo />
         <MainNav />

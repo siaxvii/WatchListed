@@ -18,8 +18,8 @@ const NavbarActions = () => {
 
   return ( 
     <div className="ml-auto flex items-center mr-6">
-        <Button onClick={() => router.push('/watchlist')} className="rounded-full bg-black border border-white hover:opacity-60">
-            <Bookmark size={22} color="white" />
+        <Button onClick={() => router.push('/watchlist')} className="rounded-full bg-black border border-white shadow hover:bg-gray-800">
+            <Bookmark size={22} color="white"/>
         </Button>
     </div>
   );

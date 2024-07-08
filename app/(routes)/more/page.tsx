@@ -1,21 +1,12 @@
-// app/more/page.tsx
-// app/more/page.tsx
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
-import { useUser } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import NavBar from "@/components/navbar";
-export default function More() {
-  
 
+export default function More() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* Top Navigation Bar */}
+    <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <div className="bg-black">
-      <NavBar />
-      <UserButton />
+        <NavBar />
       </div>
-        {/* Stats Section */}
         <div className="w-full bg-gray-800 p-4 flex justify-around items-center">
           <div className="text-center">
             <h2 className="text-2xl font-bold">150K +</h2>
@@ -36,7 +27,6 @@ export default function More() {
           <p className="text-xl mb-4">
             Here is some more information about Watchlisted.
           </p>
-          {/* Add more content as needed */}
         </div>
       
     </div>

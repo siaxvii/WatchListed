@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider"
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,20 +29,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <header>
-              <SignedOut>
-                <SignInButton>
-                  <Button className="ml-4">Sign In</Button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>   
-                <UserButton/>   
-              </SignedIn>
-            </header>
             <main>
+              <Navbar/>
               {children}
             </main>
-            <footer>© 2024 WatchListed, Inc. All rights reserved.</footer>
+            <Footer/>
           </ThemeProvider>
         </body>
         
