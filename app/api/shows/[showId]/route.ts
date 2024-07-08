@@ -1,7 +1,7 @@
+//Fetch one TV show by ID from the database
 import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 
-//Created the skeleton of the API route for getting a show by ID
 export async function GET(
     req: Request,
     { params }: { params: { showId: string } }
@@ -13,9 +13,8 @@ export async function GET(
 
         const show = await prismadb.show.findUnique({
             where: { 
-                id: parseInt(params.showId) 
+                id: parseInt(params.showId), 
             },
-            
         });
         
         return NextResponse.json(show);
