@@ -13,18 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Show {
-  id          String   @id @default(cuid())
-  showId      String   @unique
+model show {
+  id          Int   @id 
   name        String
   overview    String
   genres      String[]
-  numSeason   Int
-  numEpisodes Int
-  firstAired  DateTime
-  lastAired   DateTime
+  numseason   Int
+  numepisodes Int
+  firstaired  DateTime
+  lastaired   DateTime
   networks    String[]
   rating      Float
   languages   String[]
+  backgroundpath String
 }
-

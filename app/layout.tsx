@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -28,6 +28,14 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <header>
+              <SignedOut>
+                <SignInButton>
+                  <Button className="ml-4">Sign In</Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>   
+                <UserButton/>   
+              </SignedIn>
             </header>
             <main>
               {children}
