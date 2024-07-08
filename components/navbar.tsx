@@ -1,61 +1,42 @@
-"use client";
+import { UserButton } from "@clerk/nextjs";
+import { CircleUserRound } from "lucide-react";
+import MainNav from "./main-nav";
+import SearchBar from "./search-bar";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import Logo from "./home-logo";
+import NavbarActions from "./navbar-actions";
 
-import React, { useEffect, useState } from 'react';
-/*React used to manage state in functional components.
-Also allows you create & update state variables within a components */
-import Link from 'next/link'; //used for client side navigation between pages in a Next.js app. Quick easy access without loading another page.
-import Logo from "./home-logo"
-import SearchBar from "./search-bar"
-import { CircleUserRound } from 'lucide-react';
-import { UserButton, useUser } from '@clerk/nextjs';
-//we DONT want a tags so I removed those
+const Navbar = async () => {
+  return (
+    <div className="border-b border-white">
+      <div className="sm:px-6 lg:px-8 flex h-20 items-center">
+        <Logo />
+        <MainNav />
 
-const NavBar: React.FC = () => {
-    const { user } = useUser();
-    //const [userId, setUserId] = useState<string | null>(null);
+        <div className="ml-auto flex items-center p-2">
+          <div className="p-10">
+            <SearchBar />
+          </div>
+          <NavbarActions />
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         const user = await currentUser();
-    //         setUserId(user ? user.id: null);
-    //     };
-
-    //     fetchUser();
-    // }, []);
-
-    return(
-        <nav className='bg-black text-white p-4 flex items-center justify-between border border-white'>
-            <div className='flex -1'>
-                <Logo />
+          <SignedOut>
+            <div className="rounded-full bg-black border border-white px-4 py-2 text-white font-medium text-medium cursor-pointer hover:opacity-75">
+              <SignInButton>
+                <button className="flex items-center">
+                  <CircleUserRound className="h-5 w-5" />
+                  <span className="ml-2 font-bold hidden sm:block whitespace-nowrap">Sign In</span>
+                </button>
+              </SignInButton>
             </div>
-            
-            <div className='flex flex-1 justify-evenly items-center gap-x-4'>
-                <Link href = "/discover" className='hover:text-gray-400 font-bold text-xl'>
-                    Discover
-                </Link>
-                <Link href = "/genres" className='hover:text-gray-400 font-bold text-xl'>
-                    Genres
-                </Link>
-                <Link href = "/top-rated" className='hover:text-gray-400 font-bold text-xl'>
-                    Top Rated
-                </Link>
-                <Link href = "/recommended" className='hover:text-gray-400 font-bold text-xl'>
-                    Recommended
-                </Link>
-                <SearchBar />
-                <div className='flex items-center'>
-                    {user ? (
-                        <UserButton />
-                    ) : (
-                        <CircleUserRound
-                            className='text-white h-9 w-9 cursor-pointer'
-                            onClick={() => window.location.href = "/sign-in"}
-                        />
-                    )}
-                </div>
-            </div>
-        </nav>
-    );
+          </SignedOut>
+
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default NavBar;
+export default Navbar;

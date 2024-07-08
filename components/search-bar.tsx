@@ -22,12 +22,12 @@ const SearchBar: React.FC = () =>{
 
     return (
         <div>
-            <div className="flex items-center bg-black p-2 border border-white rounded-none max-md:hidden">
+            <div className="flex items-center bg-black p-2 border border-white rounded-md max-md:hidden">
                 <input
                     value={query}
                     onKeyDown={handleKeyPress}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="outline-white bg-transparent mr-2 text-white placeholder:text-white text-[13px] w-56"
+                    className="outline-white bg-transparent mr-2 text-white placeholder:text-white text-[13px] w-72"
                     placeholder="Search"
                     autoComplete="false"
                 />
@@ -36,7 +36,7 @@ const SearchBar: React.FC = () =>{
                     onClick={handleSearch}
                     className='flex-shrink-0'
                 >
-                    <BiSearch size={20} className='opacity-50 text-white'/>
+                    <BiSearch size={20} className='opacity-80 text-white'/>
                 </button>
             </div>
         </div>
