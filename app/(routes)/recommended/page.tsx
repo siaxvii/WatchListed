@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/nextjs";
-import NavBar from "@/components/navbar";
-
 export default function Recommended() {
   return (
     <div className="min-h-screen flex flex-col text-white bg-gradient-to-r from-[#1B1919] to-[#090909]">

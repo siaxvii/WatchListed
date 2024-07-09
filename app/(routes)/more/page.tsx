@@ -1,11 +1,7 @@
-import { UserButton } from "@clerk/nextjs";
-import NavBar from "@/components/navbar";
-
 export default function More() {
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <div className="bg-black">
-        <NavBar />
       </div>
         <div className="w-full bg-gray-800 p-4 flex justify-around items-center">
           <div className="text-center">
