@@ -27,14 +27,13 @@ const SearchBar: React.FC = () =>{
                     value={query}
                     onKeyDown={handleKeyPress}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="outline-white bg-transparent mr-2 text-white placeholder:text-white text-[13px] w-72"
+                    className="outline-none bg-transparent mr-2 text-white placeholder:text-white text-[13px] w-72"
                     placeholder="Search"
                     autoComplete="false"
                 />
                 <button
                     disabled={query === ""}
                     onClick={handleSearch}
-                    className='flex-shrink-0'
                 >
                     <BiSearch size={20} className='opacity-80 text-white'/>
                 </button>
