@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Use next/navigation instead of next/router
-import  Input  from "@/components/ui/input";
+import { useRouter } from 'next/navigation';
+import Input from "@/components/ui/input";
+import TVShowCard from "@/components/TVShowCard";
 
 const Quiz: React.FC = () => {
   const router = useRouter();
@@ -25,8 +26,8 @@ const Quiz: React.FC = () => {
     if (query.trim() !== "") {
       setSearchResults(
         allShows.filter(show => 
-          show.name.toLowerCase().includes(query.toLowerCase())
-        )
+          show.name.toLowerCase().includes(query.toLowerCase()))
+          .slice(0, 10)
       );
     } else {
       setSearchResults([]);
@@ -45,7 +46,7 @@ const Quiz: React.FC = () => {
     setSelectedShows((prev) =>
       prev.includes(show)
         ? prev.filter((s) => s !== show)
-        : prev.length < 3
+        : prev.length < 20
         ? [...prev, show]
         : prev
     );
@@ -54,10 +55,8 @@ const Quiz: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Store user preferences here (e.g., save to the database)
     console.log({ genres, length, selectedShows });
 
-    // Redirect to the homepage or another page
     router.push('/');
   };
 
@@ -81,7 +80,7 @@ const Quiz: React.FC = () => {
       <div className="mb-4">
         <h3 className="text-xl font-semibold">2. What is your preferred length for TV shows?</h3>
         <div className="flex flex-col gap-2 mt-2">
-          {['  Limited Series (no longer than one season)', '  1-3 Seasons', '  3+ Seasons', '  Doesn’t matter to me!'].map((option) => (
+          {['Limited Series (no longer than one season)', '1-3 Seasons', '3+ Seasons', 'Doesn’t matter to me!'].map((option) => (
             <label key={option} className="block">
               <input
                 type="radio"
@@ -123,10 +122,10 @@ const Quiz: React.FC = () => {
           {selectedShows.map((show) => (
             <div
               key={show.id}
-              className="border border-zinc-400 rounded-md p-2 bg-zinc-900 cursor-pointer hover:bg-zinc-800"
-              onClick={() => handleShowSelect(show)}
+              className="w-60 cursor-pointer"
+              onClick={() => handleShowSelect(show)} //Removes card if you click on it
             >
-              {show.name}
+              <TVShowCard showId={show.id} />
             </div>
           ))}
         </div>
