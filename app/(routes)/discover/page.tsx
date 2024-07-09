@@ -1,35 +1,51 @@
-import React from "react";
-import TvShowCard from "@/components/TvShowCard";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import TvShowCard from "@/components/TVShowCard";
+import axios from "axios";
 
 const Discover: React.FC = () => {
-  const tvShows = [
-    {
-      title: "Breaking Bad",
-      imageUrl: "/images/breaking_bad.jpg",
-      rating: 9.5,
-      description: "A high school chemistry teacher turned methamphetamine producer navigates the dangers of the drug trade.",
-    },
-    {
-      title: "Stranger Things",
-      imageUrl: "/images/stranger_things.jpg",
-      rating: 8.8,
-      description: "A group of kids in the 1980s uncover supernatural mysteries and government conspiracies in their small town.",
-    },
-  ];
+  const [tvShow, setTvShow] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchShow = async () => {
+      setLoading(true);
+      try {
+        // Fetch show with ID 2
+        const response = await axios.get(`/api/shows/2`);
+        setTvShow(response.data);
+      } catch (error) {
+        console.error("Error fetching show:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShow();
+  }, []);
 
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
-      <h1 className="text-4xl font-bold mb-8">All TV Shows</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">TV Show Details</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {tvShows.map((show, index) => (
+        {tvShow ? (
           <TvShowCard
-            key={index}
-            title={show.title}
-            imageUrl={show.imageUrl}
-            rating={show.rating}
-            description={show.description}
+            key={tvShow.id}
+            showId={tvShow.id}
           />
-        ))}
+        ) : (
+          <p className="text-center">No show found</p>
+        )}
+      </div>
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => setTvShow(null)} // Optional: To clear the show
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Clear"}
+        </button>
       </div>
     </div>
   );
