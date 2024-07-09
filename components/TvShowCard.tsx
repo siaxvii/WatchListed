@@ -1,11 +1,11 @@
-"use client"; // should be treated as a client component
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 
 interface TVShowCardProps {
-  showId: number; // Use showId to fetch data
+  showId: number;
 }
 
 const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
@@ -16,7 +16,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
   useEffect(() => {
     const fetchShow = async () => {
       try {
-        const response = await axios.get(`/api/shows/${showId}`); // Adjust the endpoint as needed
+        const response = await axios.get(`/api/shows/${showId}`);
         setShow(response.data);
       } catch (err) {
         setError("Failed to fetch show details.");
@@ -35,7 +35,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
   return (
     <div className="relative w-60 h-80 m-4 bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       <Image
-        src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`} // Adjust this URL based on your image service
+        src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`}
         alt={show.name}
         layout="fill"
         objectFit="cover"
