@@ -16,7 +16,6 @@ const Quiz: React.FC = () => {
   const [query, setQuery] = useState<string>('');
 
   useEffect(() => {
-    // Fetch all TV shows
     axios.get('/api/shows')
       .then(response => setAllShows(response.data))
       .catch(error => console.error(error));
@@ -63,13 +62,13 @@ const Quiz: React.FC = () => {
   return (
     <div className="p-8 bg-zinc-950 border border-white rounded-md shadow-zinc-700 shadow-2xl">
       <div className="mb-4">
-        <h3 className="text-xl font-semibold">1. What genres of TV shows do you enjoy?</h3>
+        <h3 className="text-xl font-semibold pb-4">1. What genres of TV shows do you enjoy?</h3>
         <div className="flex flex-wrap gap-2 mt-2">
           {['Action', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller'].map((genre) => (
             <button
               key={genre}
               onClick={() => handleGenreChange(genre)}
-              className={`px-4 py-2 border border-gray-400 hover:bg-zinc-800 rounded-md ${genres.includes(genre) ? 'bg-gray-900 text-white' : 'bg-zinc-950'}`}
+              className={`px-4 py-2 border border-gray-400 hover:bg-zinc-800 rounded-md ${genres.includes(genre) ? 'bg-gray-600 text-white' : 'bg-zinc-900'}`}
             >
               {genre}
             </button>
@@ -78,9 +77,9 @@ const Quiz: React.FC = () => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-xl font-semibold">2. What is your preferred length for TV shows?</h3>
-        <div className="flex flex-col gap-2 mt-2">
-          {['Limited Series (no longer than one season)', '1-3 Seasons', '3+ Seasons', 'Doesn’t matter to me!'].map((option) => (
+        <h3 className="text-xl font-semibold pb-4 pt-4">2. What is your preferred length for TV shows?</h3>
+        <div className="flex flex-col gap-2 mt-2 ml-2">
+          {['  Limited Series (no longer than one season)', '  1-3 Seasons', '  3+ Seasons', '  Doesn’t matter to me!'].map((option) => (
             <label key={option} className="block">
               <input
                 type="radio"
@@ -88,6 +87,7 @@ const Quiz: React.FC = () => {
                 value={option}
                 onChange={handleLengthChange}
                 checked={length === option}
+                className="mr-4"
               />
               {option}
             </label>
@@ -96,7 +96,7 @@ const Quiz: React.FC = () => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-xl font-semibold">3. Select your top three TV shows:</h3>
+        <h3 className="text-xl font-semibold pb-4 pt-4">3. Select your top three TV shows:</h3>
         <div className="relative mb-4 mt-4">
           <Input 
             value={query}
@@ -118,7 +118,7 @@ const Quiz: React.FC = () => {
             </ul>
           )}
         </div>
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex flex-wrap gap-8 mt-2">
           {selectedShows.map((show) => (
             <div
               key={show.id}
@@ -131,9 +131,11 @@ const Quiz: React.FC = () => {
         </div>
       </div>
 
-      <button onClick={handleSubmit} className="px-6 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white text-white rounded-md">
-        Submit
-      </button>
+      <div className="flex justify-center mt-4">
+        <button onClick={handleSubmit} className="px-14 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white text-white rounded-md">
+          Submit
+        </button>
+      </div>
     </div>
   );
 };
