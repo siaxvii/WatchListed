@@ -6,7 +6,11 @@ import { useRouter } from 'next/navigation';
 import Input from "@/components/ui/input";
 import TVShowCard from "@/components/TVShowCard";
 
-const Quiz: React.FC = () => {
+interface QuizProps {
+  onQuizComplete: () => void; //callback prop
+}
+
+const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
   const router = useRouter();
   const [genres, setGenres] = useState<string[]>([]);
   const [length, setLength] = useState<string>('');
@@ -55,7 +59,7 @@ const Quiz: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log({ genres, length, selectedShows });
-
+    onQuizComplete();
     router.push('/');
   };
 
