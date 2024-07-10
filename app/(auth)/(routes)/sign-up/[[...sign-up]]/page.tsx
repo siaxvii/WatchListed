@@ -1,12 +1,7 @@
-"use client";
-
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const router = useRouter();
-
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex items-center space-x-20 gap-28">
