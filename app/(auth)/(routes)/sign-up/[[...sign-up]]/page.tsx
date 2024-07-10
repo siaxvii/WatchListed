@@ -1,7 +1,12 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex items-center space-x-20 gap-28">
@@ -17,7 +22,7 @@ export default function Page() {
           </div>
         </div>
         <div className="flex-shrink-0">
-          <SignUp />
+          <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" fallbackRedirectUrl="/quiz" />
         </div>
       </div>
     </div>
