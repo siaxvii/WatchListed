@@ -9,14 +9,6 @@ def clean_split(text):
         return []
     else:
         return [item.strip() for item in text.split(',')]
-    
-#Checks if a string contains only ASCII characters
-def is_ascii(text):
-    try:
-        return text.isascii()
-    except AttributeError:
-        return False
-
 
 df = pd.read_csv('TMDB_tv_dataset_v3.csv')
 
@@ -34,9 +26,6 @@ df['genres'] = df['genres'].replace(genre_replacements, regex=True)
 
 #Filters out shows with a rating of 0.0
 df = df[df['vote_average'] != 0.0]
-
-#Ensures that 'name' and 'overview' columns contain only ASCII characters
-df = df[df['name'].apply(is_ascii) & df['overview'].apply(is_ascii)]
 
 #Replaces NaN or null values in the 'languages' column with 'en'
 df['languages'] = df['languages'].fillna('en')

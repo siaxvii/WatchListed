@@ -1,35 +1,52 @@
-import React from "react";
-import TvShowCard from "@/components/TvShowCard";
+"use client";
+import React, { useEffect, useState } from "react";
+import TVShowCard from "@/components/TVShowCard";
+import axios from "axios";
 
 const Discover: React.FC = () => {
-  const tvShows = [
-    {
-      title: "Breaking Bad",
-      imageUrl: "/images/breaking_bad.jpg",
-      rating: 9.5,
-      description: "A high school chemistry teacher turned methamphetamine producer navigates the dangers of the drug trade.",
-    },
-    {
-      title: "Stranger Things",
-      imageUrl: "/images/stranger_things.jpg",
-      rating: 8.8,
-      description: "A group of kids in the 1980s uncover supernatural mysteries and government conspiracies in their small town.",
-    },
-  ];
+  const [tvShows, setTvShows] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchShows = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`/api/shows?page=${page}&limit=20`);
+        setTvShows(prevShows => [...prevShows, ...response.data]);
+      } catch (error) {
+        console.error("Error fetching shows:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShows();
+  }, [page]);
+
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
 
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
-      <h1 className="text-4xl font-bold mb-8">All TV Shows</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {tvShows.map((show, index) => (
-          <TvShowCard
-            key={index}
-            title={show.title}
-            imageUrl={show.imageUrl}
-            rating={show.rating}
-            description={show.description}
+      <h1 className="text-4xl font-bold mb-8 text-center mt-8">All TV Shows</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
+        {tvShows.map(show => (
+          <TVShowCard
+            key={show.id}
+            showId={show.id}
           />
         ))}
+      </div>
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={handleLoadMore}
+          className="px-4 py-2 bg-zinc-900 text-white border border-white rounded-md"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Load More"}
+        </button>
       </div>
     </div>
   );

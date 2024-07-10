@@ -3,11 +3,11 @@
 
 import psycopg2
 
-#DATABASE_URL = removed for security reasons
+#DATABASE_URL = Removed for Privacy
 conn = psycopg2.connect('DATABASE_URL')
 
 #Reads file with SQL insertion statements into a variable 
-with open('sql_inserts.txt', 'r', encoding='utf-8') as file:
+with open('sql_inserts2.txt', 'r', encoding='utf-8') as file:
     sql_inserts = file.read()
 
 #Creates database cursor to execute SQL insertions, commits transaction to db
