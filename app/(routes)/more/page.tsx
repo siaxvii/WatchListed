@@ -1,11 +1,23 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 export default function More() {
   const router = useRouter();
+  const { user } = useUser();
   
+  const handleStartNowClick = () => {
+    if (user) {
+      //If user is signed in, redirects to homepage
+      router.push('/');
+    } else {
+      // User is not signed in, redirect to sign-up page
+      router.push('/sign-up');
+    }
+  };
+
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <div className="bg-black">
@@ -34,7 +46,7 @@ export default function More() {
           </ul>
         </div>
         <div className="flex justify-center mt-16 p-4">
-          <button onClick={() => router.push('/sign-up')} className="px-14 py-2 bg-zinc-900 hover:shadow-cyan-800 shadow-lg border border-white text-white rounded-md">
+          <button onClick={handleStartNowClick} className="px-14 py-2 bg-zinc-900 hover:shadow-cyan-800 shadow-lg border border-white text-white rounded-md">
             Sign Up!
           </button>
         </div>
