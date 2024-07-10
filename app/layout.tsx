@@ -28,7 +28,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main>
+            <main className="bg-gradient-to-r from-[#1B1919] to-[#090909]">
               <Navbar/>
               {children}
             </main>
