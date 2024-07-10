@@ -4,16 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { useUser } from "@clerk/nextjs";
 
 const MainNav = () => {
   const pathname = usePathname();
   const { theme } = useTheme();
+  const { user } = useUser();
 
   const routes = [
     { href: "/discover", label: "Discover" },
     { href: "/genres", label: "Genres" },
     { href: "/top-rated", label: "Top Rated" },
-    { href: "/recommended", label: "Recommended" }
+    { href: "/recommended", label: "Recommended" },
+    ...(user ? [{ href: "/quiz", label: "Quiz" }] : []) //adds Quiz link conditionally
   ];
 
   return (
