@@ -5,14 +5,26 @@ import Image from "next/image";
 import More from "./more/page";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function HomePage() {
   const router = useRouter();
-  const moreRef = useRef<HTMLDivElement>(null); // Create a ref for More component
+  const moreRef = useRef<HTMLDivElement>(null); //creates a ref for the more component
+  const { user } = useUser();
 
   const handleReadMoreClick = () => {
     if (moreRef.current) {
-      moreRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll to More component smoothly
+      moreRef.current.scrollIntoView({ behavior: 'smooth' }); //scrolls smoothly to bottom of homepage
+    }
+  };
+
+  const handleStartNowClick = () => {
+    if (user) {
+      //if user is signed in, redirects to homepage
+      router.push('/');
+    } else {
+      //if user is not signed in, redirects to sign-up page
+      router.push('/sign-up');
     }
   };
 
@@ -31,7 +43,7 @@ export default function HomePage() {
           <div className="h-1"></div>
           <div className="flex-col space-x-8"> 
             <Button variant="default" className="hover:shadow-zinc-800 shadow-lg" onClick={handleReadMoreClick}>Read More</Button>
-            <Button variant="default" className="hover:shadow-cyan-800 shadow-lg" onClick={() => router.push('/sign-up')}> Start now! </Button>
+            <Button variant="default" className="hover:shadow-cyan-800 shadow-lg" onClick={handleStartNowClick}> Start now! </Button>
           </div>
         </div>
         <div className="p-20 ml-12 mb-4">
