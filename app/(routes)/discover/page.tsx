@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TVShowCard from "@/components/TVShowCard";
+import TVShowCard from "@/components/TvShowCard";
 import axios from "axios";
 
 const Discover: React.FC = () => {

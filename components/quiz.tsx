@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Input from "@/components/ui/input";
-import TVShowCard from "@/components/TVShowCard";
+import TVShowCard from "@/components/TvShowCard";
 
 interface QuizProps {
   onQuizComplete: () => void; //callback prop
