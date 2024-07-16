@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
+import Link from "next/link";
 
 interface TVShowCardProps {
   showId: number;
@@ -42,7 +43,9 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
         className="absolute inset-0 z-0"
       />
       <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-        <h3 className="text-white text-lg font-semibold">{show.name}</h3>
+        <Link href={`/show/${showId}`} className="text-white text-lg font-semibold">
+          {show.name}
+        </Link>
         <p className="text-yellow-400 text-sm">Rating: {show.rating.toFixed(1)}/10</p>
         <p className="text-gray-300 text-sm mt-2">{show.overview}</p>
       </div>
