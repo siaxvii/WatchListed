@@ -21,6 +21,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="shortcut icon" href ="images/favicon.ico"/>
+        </head>
         <body>
           <ThemeProvider
             attribute="class"

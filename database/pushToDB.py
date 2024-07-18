@@ -3,7 +3,7 @@
 
 import psycopg2
 
-#DATABASE_URL = Removed for Privacy
+#DATABASE_URL = hidden for security reasons 
 conn = psycopg2.connect('DATABASE_URL')
 
 #Reads file with SQL insertion statements into a variable 
