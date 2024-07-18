@@ -19,9 +19,6 @@ export async function GET(req: Request) {
 
     const queryOptions: any = {
       where: whereClause,
-      orderBy: {
-        rating: 'desc',
-      },
     };
 
     //Applies pagination only if limit is specified
