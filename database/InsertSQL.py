@@ -3,32 +3,23 @@ import pandas as pd
 df = pd.read_csv('final.csv')
 
 #Selects necessary columns
-df = df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]
-
-#Filters TV shows with a rating of 0.0
-df = df[df.iloc[:, 10] != 0.0]
-
-#Replaces NaN or null values in the 'languages' column with 'en'
-df.iloc[:, 11] = df.iloc[:, 11].fillna('en')
-
-#Replaces NaN or null values in the dataframe with an empty string
-df = df.fillna(' ')
-
-#Removes newline and carriage return characters from the 'overview' column
-df.iloc[:, 3] = df.iloc[:, 3].str.replace('\n', ' ').str.replace('\r', ' ')
-
-#Drops showid column because of redundancy
-df = df.drop(columns=[df.columns[1]])
+# Select necessary columns (update to reflect current column positions)
+df = df[['id', 'name', 'overview', 'genres', 'number_of_seasons', 'number_of_episodes', 
+         'first_air_date', 'last_air_date', 'networks', 'vote_count', 'vote_average', 
+         'languages', 'popularity', 'backdrop_path', 'weighted_rating', 'watchlisted_rating']]
 
 #Formats each row into SQL INSERT statements
 def format_insert(row): 
     if any(str(attr).strip() == '' for attr in row[:-1]):  #Checking all columns except the last one (languages)
         return None
     
+
+    #Replaces single quotes with double single quotes and double quotes with empty string
     name = row[1].replace("'", "''").replace('"', "")
     overview = row[2].replace("'", "''").replace('"', "")
+
     # Constructs the SQL INSERT INTO statement
-    values = f"({row[0]}, '{name}','{overview}', ARRAY{row[3]}, {row[4]}, {row[5]}, '{row[6]}'::timestamp, '{row[7]}'::timestamp, ARRAY{row[8]}, {row[9]}, ARRAY{row[10]}, '{row[11]}'),"
+    values = f"({row[0]}, '{name}', '{overview}', ARRAY{row[3]}, {row[4]}, {row[5]}, '{row[6]}'::timestamp, '{row[7]}'::timestamp, ARRAY{row[8]}, {row[9]}, {row[10]}, ARRAY{row[11]}, {row[12]}, '{row[13]}', {row[14]}, {row[15]}),"
     return values
 
 #Splits DataFrame into two halves for two different insert files
@@ -45,8 +36,8 @@ insert_values1 = insert_values1.rstrip(',')
 insert_values2 = insert_values2.rstrip(',')
 
 #Adds semicolon at the end to complete SQL INSERT statements
-sql_insert1 = f"INSERT INTO show (id, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, rating, languages, backgroundpath) VALUES\n{insert_values1};"
-sql_insert2 = f"INSERT INTO show (id, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, rating, languages, backgroundpath) VALUES\n{insert_values2};"
+sql_insert1 = f"INSERT INTO show (id, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, votecount, rating, languages, popularity, backgroundpath, weightedrating, watchlistedrating) VALUES\n{insert_values1};"
+sql_insert2 = f"INSERT INTO show (id, name, overview, genres, numseason, numepisodes, firstaired, lastaired, networks, votecount, rating, languages, popularity, backgroundpath, weightedrating, watchlistedrating) VALUES\n{insert_values2};"
 
 #Output file paths
 output_file1 = 'sql_inserts.txt'

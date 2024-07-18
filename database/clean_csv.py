@@ -1,5 +1,3 @@
-#Reads "TMDB_tv_dataset_v3.csv" and filters out undesired columns
-
 import pandas as pd
 import csv
 
@@ -14,12 +12,11 @@ df = pd.read_csv('TMDB_tv_dataset_v3.csv')
 
 #Selects necessary columns and renames 'id' column to 'showid' in dataframe
 df = df[['id', 'name', 'overview', 'genres', 'number_of_seasons', 'number_of_episodes', 
-         'first_air_date', 'last_air_date', 'networks', 'vote_average', 'languages', 'backdrop_path']].rename(columns={'id': 'showid'})
+         'first_air_date', 'last_air_date', 'networks', 'vote_count', 'vote_average', 'languages', 'popularity', 'backdrop_path']]
 
 #Replaces specific genre names using a dictionary
 genre_replacements = {
     'Action & Adventure': 'Action',
-    'Animation': 'Anime',
     'Sci-Fi & Fantasy': 'Sci-Fi'
 }
 df['genres'] = df['genres'].replace(genre_replacements, regex=True)
@@ -43,11 +40,27 @@ columns_to_split = ['genres', 'networks', 'languages']
 for col in columns_to_split:
     df[col] = df[col].apply(clean_split)
 
-# Removes newline and carriage return characters from the 'overview' column
-df['overview'] = df['overview'].str.replace('\n', ' ').str.replace('\r', ' ')
+#Replaces the existing 'id' column with an autoincrementing number
+df['id'] = range(1, len(df) + 1)
 
-#Adds new autoincrementing 'id' column
-df.insert(0, 'id', range(1, 1 + len(df)))
+#Weights for the composite score
+vote_weight = 0.4
+popularity_weight = 0.6
+
+#Calculate the weighted rating directly, excluding shows with less than 50 votes
+df['weighted_rating'] = df.apply(
+    lambda row: (
+        vote_weight * (row['vote_average'] if row['vote_count'] >= 50 else 0) +
+        popularity_weight * (row['popularity'] / df['popularity'].max())
+    ) if row['vote_count'] >= 50 else (
+        popularity_weight * (row['popularity'] / df['popularity'].max())
+    ),
+    axis=1
+)
+
+# Normalize the weighted rating to be out of 10
+max_weighted_rating = df['weighted_rating'].max()
+df['watchlisted_rating'] = (df['weighted_rating'] / max_weighted_rating) * 10
 
 #Saves the modified DataFrame to a new CSV file with custom quoting
 with open('final.csv', mode='w', newline='', encoding='utf-8') as file:

@@ -14,16 +14,20 @@ datasource db {
 }
 
 model show {
-  id          Int   @id 
-  name        String
-  overview    String
-  genres      String[]
-  numseason   Int
-  numepisodes Int
-  firstaired  DateTime
-  lastaired   DateTime
-  networks    String[]
-  rating      Float
-  languages   String[]
-  backgroundpath String
+  id                   Int   @id 
+  name                 String
+  overview             String
+  genres               String[]
+  numseason            Int
+  numepisodes          Int
+  firstaired           DateTime
+  lastaired            DateTime
+  networks             String[]
+  votecount            Int
+  rating               Float
+  languages            String[]
+  popularity           Float
+  backgroundpath       String
+  weightedrating       Float
+  watchlistedrating    Float
 }
