@@ -9,13 +9,13 @@ interface Show {
   id: number;
   name: string;
   overview: string;
-  rating: number;
   backgroundpath: string;
   genres: string[];
   firstaired: string; 
   lastaired: string; 
   numseason: number; 
   numepisodes: number; 
+  watchlistedrating: number;
 }
 
 const ShowPage: React.FC = () => {
@@ -70,7 +70,7 @@ const ShowPage: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl font-bold">{show.name}</h1>
           <div className="flex items-center text-lg">
-            <h3 className="text-xl font-bold pr-2">WatchListed Rating: {show.rating.toFixed(1)}/10 </h3>
+            <h3 className="text-xl font-bold pr-2">WatchListed Rating: {show.watchlistedrating.toFixed(1)}/10 </h3>
             <FaStar className="h-5 w-5 text-yellow-500" />
           </div>
         </div>
@@ -95,7 +95,7 @@ const ShowPage: React.FC = () => {
         <br></br>
         <br></br>
         <br></br>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 mt-20">
           <div className="text-2xl font-bold">
             {firstAiredFormatted === lastAiredFormatted ? (
               <span>Last Aired: {lastAiredFormatted}</span>
