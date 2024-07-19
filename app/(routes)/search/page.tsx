@@ -1,53 +1,65 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import TVShowCard from "@/components/TvShowCard";
+import { useSearchParams } from 'next/navigation';
+import TVShowCard from "@/components/TVShowCard";
 
 const SearchResults: React.FC = () => {
-    const router = useRouter();
+    const searchParams = useSearchParams();
     const [query, setQuery] = useState<string>('');
     const [allShows, setAllShows] = useState<any[]>([]);
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search);
-        const queryParam = searchParams.get('query');
-        setQuery(queryParam || '');
+        if (searchParams) {
+            const queryParam = searchParams.get('query');
+            setQuery(queryParam || '');
+        }
+    }, [searchParams]);
 
+    useEffect(() => {
         axios.get('/api/shows')
-            .then(response => setAllShows(response.data))
-            .catch(error => console.error(error));
+            .then(response => {
+                setAllShows(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error(error);
+                setLoading(false);
+            });
     }, []);
 
-    useEffect(() => {
-        if (query.trim() !== '') {
-            setSearchResults(
-                allShows.filter(show =>
-                    show.name.toLowerCase().includes(query.toLowerCase())
-                )
-            );
-        } else {
-            setSearchResults([]);
-        }
-    }, [query, allShows]);
+    const searchResults = useMemo(() => {
+        if (loading || query.trim() === '') return [];
+        return allShows.filter(show =>
+            show.name.toLowerCase().includes(query.toLowerCase())
+        );
+    }, [query, allShows, loading]);
 
     return (
-        <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
-            <h1 className="text-2xl font-semibold mb-4">Search Results for "{query}"</h1>
-            <div className="flex flex-wrap gap-4">
-                {searchResults.map((show) => (
-                    <div key={show.id} className="w-60 cursor-pointer">
-                        <TVShowCard showId={show.id} />
-                    </div>
-                ))}
-            </div>
+        <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909] p-10">
+            <h1 className="text-2xl font-semibold mb-4 ml-4">
+                {loading ? 'Loading...' : `${searchResults.length} search results for "${query}"`}
+            </h1>
+
+            {searchResults.length === 0 && !loading ? (
+                <div className="flex-grow flex items-center justify-center">
+                    <p className="text-center text-xl">
+                        No results found for "{query}".
+                    </p>
+                </div>
+            ) : (
+                <div className="flex flex-wrap gap-10">
+                    {searchResults.map((show) => (
+                        <div key={show.id} className="w-60 cursor-pointer">
+                            <TVShowCard showId={show.id} />
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
 
 export default SearchResults;
-
-
-

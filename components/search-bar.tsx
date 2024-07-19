@@ -10,7 +10,6 @@ const SearchBar: React.FC = () => {
     const [query, setQuery] = useState<string>('');
     const [allShows, setAllShows] = useState<any[]>([]);
     const [searchResults, setSearchResults] = useState<any[]>([]);
-    const [selectedShows, setSelectedShows] = useState<any[]>([]);
 
     useEffect(() => {
         axios.get('/api/shows')
@@ -33,25 +32,21 @@ const SearchBar: React.FC = () => {
     const handleSearch = () => {
         if (query.trim() !== '') {
             router.push(`/search?query=${query}`);
+            setQuery('');
         }
     };
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleSearch();
+            setQuery('');
         }
     };
 
     const handleShowSelect = (show: any) => {
-        setSelectedShows((prev) =>
-            prev.includes(show)
-                ? prev.filter((s) => s !== show)
-                : prev.length < 20
-                    ? [...prev, show]
-                    : prev
-        );
         setQuery('');
-        setSearchResults([]);
+        setSearchResults([])
+        router.push(`/show/${show.id}`);
     };
 
     return (
@@ -65,10 +60,7 @@ const SearchBar: React.FC = () => {
                     placeholder="Search"
                     autoComplete="off"
                 />
-                <button
-                    disabled={query === ''}
-                    onClick={handleSearch}
-                >
+                <button disabled={query === ''} onClick={handleSearch}>
                     <BiSearch size={20} className='opacity-80 text-white' />
                 </button>
             </div>
@@ -78,7 +70,7 @@ const SearchBar: React.FC = () => {
                         <li
                             key={show.id}
                             onClick={() => handleShowSelect(show)}
-                            className="p-2 cursor-pointer hover:bg-zinc-800"
+                            className="p-2 cursor-pointer gap-4 hover:bg-zinc-800"
                         >
                             {show.name}
                         </li>
@@ -90,4 +82,3 @@ const SearchBar: React.FC = () => {
 };
 
 export default SearchBar;
-
