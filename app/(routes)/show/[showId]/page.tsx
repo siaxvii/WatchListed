@@ -1,22 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import { FaStar } from "react-icons/fa";
-
-interface Show {
-  id: number;
-  name: string;
-  overview: string;
-  backgroundpath: string;
-  genres: string[];
-  firstaired: string; 
-  lastaired: string; 
-  numseason: number; 
-  numepisodes: number; 
-  watchlistedrating: number;
-}
+import getShow from '@/actions/get-show';
+import { Show } from '@/types';
+import { Spinner } from '@/components/ui/spinner';
 
 const ShowPage: React.FC = () => {
   const [show, setShow] = useState<Show | null>(null);
@@ -27,11 +16,11 @@ const ShowPage: React.FC = () => {
     const fetchShow = async () => {
       const { pathname } = window.location;
       const showId = pathname.split('/').pop();
-
+      
       if (showId) {
         try {
-          const response = await axios.get(`/api/shows/${showId}`);
-          setShow(response.data);
+          const showData = await getShow(parseInt(showId));
+          setShow(showData);
         } catch (err) {
           setError('Failed to fetch show details.');
         } finally {
@@ -43,11 +32,16 @@ const ShowPage: React.FC = () => {
     fetchShow();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+    <div className="min-h-screen p-8 bg-gradient-to-r from-[#1B1919] to-[#090909] text-white flex items-center justify-center">
+      <Spinner size="medium" />
+    </div>
+  );
+  
   if (error) return <p>{error}</p>;
   if (!show) return <p>No show data available.</p>;
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: Date) => {
     const options = { year: 'numeric', month: 'long' } as const;
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
@@ -57,6 +51,7 @@ const ShowPage: React.FC = () => {
 
   return (
     <div className="min-h-screen p-8 bg-gradient-to-r from-[#1B1919] to-[#090909] text-white flex">
+      
       <div className="flex-shrink-0 mr-8">
         <Image
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`}
