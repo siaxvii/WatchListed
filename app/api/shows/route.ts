@@ -1,5 +1,3 @@
-// Fetch all TV shows from the database
-
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -9,7 +7,7 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre') || undefined;
     const search = searchParams.get('search') || undefined;
 
-    const limit = searchParams.get('limit');
+    const limit = parseInt(searchParams.get('limit') || '10');
     const page = parseInt(searchParams.get('page') || '1');
 
     const whereClause: any = {
@@ -19,17 +17,25 @@ export async function GET(req: Request) {
 
     const queryOptions: any = {
       where: whereClause,
+      orderBy: {
+        // Ensure consistent ordering
+        watchlistedrating: 'desc',
+      },
+      take: limit,
+      skip: (page - 1) * limit,
     };
 
-    //Applies pagination only if limit is specified
-    if (limit) {
-      queryOptions.take = parseInt(limit);
-      queryOptions.skip = (page - 1) * parseInt(limit);
-    }
-
+    // Fetch shows based on query options
     const shows = await prismadb.show.findMany(queryOptions);
 
-    return NextResponse.json(shows);
+    // Splits shows into English and non-English
+    const englishShows = shows.filter(show => show.languages.includes('en'));
+    const nonEnglishShows = shows.filter(show => !show.languages.includes('en'));
+
+    // Concatenates English shows first
+    const sortedShows = [...englishShows, ...nonEnglishShows];
+
+    return NextResponse.json(sortedShows);
   } catch (error) {
     console.error('[SHOWS_GET]', error);
     return new NextResponse('Internal Error!', { status: 500 });
