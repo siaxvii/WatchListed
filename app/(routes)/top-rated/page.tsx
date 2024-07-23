@@ -4,32 +4,38 @@ import React, { useEffect, useState } from 'react';
 import TVShowCard from '@/components/TVShowCard';
 import getTopRatedShows from '@/actions/get-top-rated';
 import { Show } from '@/types';
+import { Spinner } from '@/components/ui/spinner';
 
 const TopRatedShows: React.FC = () => {
   const [shows, setShows] = useState<Show[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTopRatedShows = async () => {
+      setLoading(true);
       try {
-        const showData = await getTopRatedShows();
-        setShows(showData);
+        const showData = await getTopRatedShows({ page, limit: 10 });
+        setShows(prevShows => [...prevShows, ...showData]);
       } catch (err) {
-        setError('Failed to fetch top-rated shows.');
+        console.error('Failed to fetch top-rated shows.');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTopRatedShows();
-  }, []);
+  }, [page]);
 
-  if (error) return <p>{error}</p>;
-  if (shows.length === 0) return <p>Loading...</p>;
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
 
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <h1 className="text-4xl font-bold mb-8 text-center mt-8">Top Rated</h1>
       <div className="flex justify-center px-2">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-14 gap-50 max-w-screen-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
           {shows.map(show => (
             <TVShowCard
               key={show.id}
@@ -37,6 +43,15 @@ const TopRatedShows: React.FC = () => {
             />
           ))}
         </div>
+      </div>
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={handleLoadMore}
+          className="px-4 py-2 bg-zinc-900 text-white border border-white rounded-md"
+          disabled={loading}
+        >
+          {loading ? <Spinner size="medium" /> : "Load More"}
+        </button>
       </div>
     </div>
   );
