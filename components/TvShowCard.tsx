@@ -3,14 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaBookmark } from "react-icons/fa";
 import getShow from "@/actions/get-show";
 import { Show } from "@/types";
 
 interface TVShowCardProps {
   showId: number;
+  rank?: number;
 }
 
-const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
+const TVShowCard: React.FC<TVShowCardProps> = ({ showId, rank }) => {
   const [show, setShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,10 +30,16 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
   }, [showId]);
 
   if (error) return <p>{error}</p>;
-  if (!show) return;
+  if (!show) return null;
 
   return (
     <div className="relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 hover:opacity-40">
+      {rank && (
+        <div className="absolute right-1 text-yellow-400 font-bold rounded flex items-center justify-center space-x-1 z-10">
+          <FaBookmark className="relative text-5xl" />
+          <span className="absolute text-med text-black font-bold pb-2">#{rank}</span>
+        </div>
+      )}
       <div className="relative w-full h-72">
         <Image
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`}
@@ -45,7 +53,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId }) => {
           {show.name}
         </Link>
         <p className="text-yellow-400 text-sm mt-1 font-bold text-center">
-          Rating: {show.watchlistedrating.toFixed(1)}/10
+          WatchListed Rating: {show.watchlistedrating.toFixed(1)}/10
         </p>
       </div>
     </div>

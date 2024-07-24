@@ -36,10 +36,11 @@ const TopRatedShows: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8 text-center mt-8">Top Rated</h1>
       <div className="flex justify-center px-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
-          {shows.map(show => (
+          {shows.map((show, index) => (
             <TVShowCard
               key={show.id}
               showId={show.id}
+              rank={index < 10 ? index + 1 : undefined} //Passes rank for top 10 shows
             />
           ))}
         </div>
