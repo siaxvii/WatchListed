@@ -1,3 +1,5 @@
+// Fetch all TV shows from the database
+
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -7,7 +9,7 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre') || undefined;
     const search = searchParams.get('search') || undefined;
 
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = searchParams.get('limit');
     const page = parseInt(searchParams.get('page') || '1');
 
     const whereClause: any = {
@@ -17,15 +19,14 @@ export async function GET(req: Request) {
 
     const queryOptions: any = {
       where: whereClause,
-      orderBy: {
-        // Ensure consistent ordering
-        watchlistedrating: 'desc',
-      },
-      take: limit,
-      skip: (page - 1) * limit,
     };
 
-    // Fetch shows based on query options
+    //Applies pagination only if limit is specified
+    if (limit) {
+      queryOptions.take = parseInt(limit);
+      queryOptions.skip = (page - 1) * parseInt(limit);
+    }
+
     const shows = await prismadb.show.findMany(queryOptions);
 
     // Splits shows into English and non-English
