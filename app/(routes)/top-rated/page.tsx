@@ -32,7 +32,7 @@ const TopRatedShows: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909]">
+    <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909] pb-6">
       <h1 className="text-4xl font-bold mb-8 text-center mt-8">Top Rated</h1>
       <div className="flex justify-center px-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
