@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBookmark } from "react-icons/fa";
+import { IoBookmarkSharp } from "react-icons/io5";
 import getShow from "@/actions/get-show";
 import { Show } from "@/types";
 
@@ -35,12 +35,12 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ showId, rank }) => {
   return (
     <div className="relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 hover:opacity-40">
       {rank && (
-        <div className="absolute right-1 text-yellow-400 font-bold rounded flex items-center justify-center space-x-1 z-10">
-          <FaBookmark className="relative text-5xl" />
-          <span className="absolute text-med text-black font-bold pb-2">#{rank}</span>
+        <div className="-top-1 absolute top-0 right-0 flex items-center justify-center space-x-1 z-10">
+          <IoBookmarkSharp className="top-0 text-yellow-400 text-5xl" />
+          <span className="absolute text-sm text-black font-bold pb-2">#{rank}</span>
         </div>
       )}
-      <div className="relative w-full h-72">
+      <div className="relative w-full h-72 top-0">
         <Image
           src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`}
           alt=""
