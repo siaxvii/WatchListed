@@ -16,14 +16,18 @@ const TopRatedShows: React.FC = () => {
       setLoading(true);
       try {
         const showData = await getTopRatedShows({ page, limit: 10 });
-        setShows(prevShows => [...prevShows, ...showData]);
+        setShows(prevShows => {
+          //Filters out any shows from new data that are already in the previous state
+          const newShows = showData.filter(show => !prevShows.some(prevShow => prevShow.id === show.id));
+          return [...prevShows, ...newShows];    //Returns a new array that includes all previous shows and new filtered shows
+        });
       } catch (err) {
         console.error('Failed to fetch top-rated shows.');
       } finally {
         setLoading(false);
       }
     };
-
+    
     fetchTopRatedShows();
   }, [page]);
 

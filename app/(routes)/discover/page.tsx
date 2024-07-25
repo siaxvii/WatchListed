@@ -14,7 +14,11 @@ const Discover: React.FC = () => {
       setLoading(true);
       try {
         const shows = await getShows({ page, limit: 10 });
-        setTVShows(prevShows => [...prevShows, ...shows]);
+        setTVShows(prevShows => {
+          //Filters out any shows from new data that are already in the previous state
+          const newShows = shows.filter(show => !prevShows.some(prevShow => prevShow.id === show.id));
+          return [...prevShows, ...newShows];    //Returns a new array that includes all previous shows and new filtered shows
+        });
       } catch (error) {
         console.error("Error fetching shows:", error);
       } finally {
