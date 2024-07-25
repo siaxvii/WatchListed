@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre') || undefined;
     const search = searchParams.get('search') || undefined;
 
-    const limit = searchParams.get('limit');
+    const limit = parseInt(searchParams.get('limit') || '10');
     const page = parseInt(searchParams.get('page') || '1');
 
     const whereClause: any = {
@@ -19,13 +19,9 @@ export async function GET(req: Request) {
 
     const queryOptions: any = {
       where: whereClause,
+      take: limit,
+      skip: (page - 1) * limit,
     };
-
-    //Applies pagination only if limit is specified
-    if (limit) {
-      queryOptions.take = parseInt(limit);
-      queryOptions.skip = (page - 1) * parseInt(limit);
-    }
 
     const shows = await prismadb.show.findMany(queryOptions);
 
