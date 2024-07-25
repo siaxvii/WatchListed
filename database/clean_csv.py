@@ -10,7 +10,7 @@ def clean_split(text):
 
 df = pd.read_csv('TMDB_tv_dataset_v3.csv')
 
-#Selects necessary columns and renames 'id' column to 'showid' in dataframe
+#Selects necessary columns and rename 'id' column to 'showid' in dataframe
 df = df[['id', 'name', 'overview', 'genres', 'number_of_seasons', 'number_of_episodes', 
          'first_air_date', 'last_air_date', 'networks', 'vote_count', 'vote_average', 'languages', 'popularity', 'backdrop_path']]
 
@@ -20,9 +20,6 @@ genre_replacements = {
     'Sci-Fi & Fantasy': 'Sci-Fi'
 }
 df['genres'] = df['genres'].replace(genre_replacements, regex=True)
-
-#Filters out shows with a rating of 0.0
-df = df[df['vote_average'] != 0.0]
 
 #Replaces NaN or null values in the 'languages' column with 'en'
 df['languages'] = df['languages'].fillna('en')
@@ -43,22 +40,10 @@ for col in columns_to_split:
 #Replaces the existing 'id' column with an autoincrementing number
 df['id'] = range(1, len(df) + 1)
 
-#Weights for the composite score
-vote_weight = 0.4
-popularity_weight = 0.6
+#Calculates the weighted rating using vote_count * vote_average
+df['weighted_rating'] = df['vote_count'] * df['vote_average']
 
-#Calculate the weighted rating directly, excluding shows with less than 50 votes
-df['weighted_rating'] = df.apply(
-    lambda row: (
-        vote_weight * (row['vote_average'] if row['vote_count'] >= 50 else 0) +
-        popularity_weight * (row['popularity'] / df['popularity'].max())
-    ) if row['vote_count'] >= 50 else (
-        popularity_weight * (row['popularity'] / df['popularity'].max())
-    ),
-    axis=1
-)
-
-# Normalize the weighted rating to be out of 10
+#Normalizes the weighted rating to be out of 10
 max_weighted_rating = df['weighted_rating'].max()
 df['watchlisted_rating'] = (df['weighted_rating'] / max_weighted_rating) * 10
 
