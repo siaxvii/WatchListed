@@ -39,6 +39,7 @@ const Discover: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 px-16">
         {tvShows.map(show => (
           <TVShowCard
+            data= {show}
             key={show.id}
             showId={show.id}
           />
