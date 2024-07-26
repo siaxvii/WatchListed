@@ -53,7 +53,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
 
   return (
     <div className="relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 hover:opacity-50 group">
-      <div className="gap-x-6 absolute w-full flex justify-center bottom-28 opacity-0 group-hover:opacity-100 group-hover:text-gray-100 transition-opacity duration-300 z-10">
+      <div className="gap-x-6 pb-2 absolute w-full flex justify-center bottom-28 opacity-0 group-hover:opacity-100 group-hover:text-gray-100 transition-opacity duration-300 z-10">
         <IconButton
           onClick={onSaveToWatchList}       
           icon={<Bookmark size={25} className="text-gray-800" />} 
