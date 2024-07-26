@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import TVShowCard from "@/components/TVShowCard";
 import { Spinner } from '@/components/ui/spinner';
-import getShows from "@/actions/get-shows";  // Importing the getShows function
+import getShows from "@/actions/get-shows";
 
 const SearchResults: React.FC = () => {
     const searchParams = useSearchParams();
@@ -63,7 +63,7 @@ const SearchResults: React.FC = () => {
                 <div className="flex flex-wrap gap-10">
                     {searchResults.map((show) => (
                         <div key={show.id} className="w-60 cursor-pointer">
-                            <TVShowCard showId={show.id} />
+                            <TVShowCard data={show} showId={show.id} />
                         </div>
                     ))}
                 </div>
