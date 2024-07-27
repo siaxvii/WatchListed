@@ -9,11 +9,7 @@ import useWatchlist from "@/actions/use-watchlist";
 import { Show } from "@/types";
 import { Bookmark, X } from "lucide-react";
 import IconButton from "./ui/icon-button";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
 interface TVShowCardProps {
   data: Show;
