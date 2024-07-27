@@ -36,7 +36,7 @@ const Discover: React.FC = () => {
   return (
     <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909] pb-6">
       <h1 className="text-4xl font-bold mb-8 text-center mt-8">All TV Shows</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 px-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 px-16 ml-10 mr-10">
         {tvShows.map(show => (
           <TVShowCard
             data= {show}

@@ -66,7 +66,7 @@ const SearchBar: React.FC = () => {
                 </button>
             </div>
             {searchResults.length > 0 && (
-                <ul className="absolute top-full left-0 w-full bg-zinc-900 border border-white rounded-md z-10 max-h-60 overflow-y-auto mt-2">
+                <ul className="absolute top-full z-20 left-0 w-full bg-zinc-900 border border-white rounded-md z-10 max-h-60 overflow-y-auto mt-2">
                     {searchResults.map((show) => (
                         <li
                             key={show.id}
