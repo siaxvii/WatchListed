@@ -56,7 +56,7 @@ const SearchResults: React.FC = () => {
             {searchResults.length === 0 && !loading ? (
                 <div className="flex-grow flex items-center justify-center">
                     <p className="text-center text-xl">
-                        No results found for "{query}".
+                        No results found for &quot;{query}&quot;.
                     </p>
                 </div>
             ) : (
