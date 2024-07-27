@@ -65,7 +65,7 @@ const ShowPage: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl font-bold">{show.name}</h1>
           <div className="flex items-center text-lg">
-            <h3 className="text-xl font-bold pr-2">WatchListed Rating: {show.watchlistedrating.toFixed(1)}/10 </h3>
+            <h3 className="text-xl font-bold pr-2">WatchListed Rating: {show.watchlistedrating.toFixed(2)}/10 </h3>
             <FaStar className="h-5 w-5 text-yellow-500" />
           </div>
         </div>

@@ -2,37 +2,36 @@
 
 import { BiSearch } from 'react-icons/bi';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import getShows from '@/actions/get-shows';
 
 const SearchBar: React.FC = () => {
     const router = useRouter();
     const [query, setQuery] = useState<string>('');
-    const [allShows, setAllShows] = useState<any[]>([]);
     const [searchResults, setSearchResults] = useState<any[]>([]);
 
     useEffect(() => {
-        axios.get('/api/shows')
-            .then(response => setAllShows(response.data))
-            .catch(error => console.error(error));
-    }, []);
-
-    useEffect(() => {
-        if (query.trim() !== '') {
-            setSearchResults(
-                allShows.filter(show =>
-                    show.name.toLowerCase().includes(query.toLowerCase())
-                ).slice(0, 10)
-            );
-        } else {
+        const fetchFilteredShows = async () => {
+          if (query.trim() !== "") {
+            try {
+              const filteredShows = await getShows({ search: query, limit: 10 });
+              setSearchResults(filteredShows);
+            } catch (error) {
+              console.error('Error fetching filtered shows:', error);
+            }
+          } else {
             setSearchResults([]);
-        }
-    }, [query, allShows]);
+          }
+        };
+    
+        fetchFilteredShows();
+      }, [query]);
 
     const handleSearch = () => {
         if (query.trim() !== '') {
             router.push(`/search?query=${query}`);
             setQuery('');
+            setSearchResults([]);
         }
     };
 
@@ -40,6 +39,7 @@ const SearchBar: React.FC = () => {
         if (event.key === 'Enter') {
             handleSearch();
             setQuery('');
+            setSearchResults([]);
         }
     };
 
@@ -47,6 +47,7 @@ const SearchBar: React.FC = () => {
         setQuery('');
         setSearchResults([])
         router.push(`/show/${show.id}`);
+        setSearchResults([]);
     };
 
     return (
@@ -65,7 +66,7 @@ const SearchBar: React.FC = () => {
                 </button>
             </div>
             {searchResults.length > 0 && (
-                <ul className="absolute top-full left-0 w-full bg-zinc-900 border border-white rounded-md z-10 max-h-60 overflow-y-auto mt-2">
+                <ul className="absolute top-full z-20 left-0 w-full bg-zinc-900 border border-white rounded-md z-10 max-h-60 overflow-y-auto mt-2">
                     {searchResults.map((show) => (
                         <li
                             key={show.id}
