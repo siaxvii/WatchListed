@@ -25,14 +25,7 @@ export async function GET(req: Request) {
 
     const shows = await prismadb.show.findMany(queryOptions);
 
-    // Splits shows into English and non-English
-    const englishShows = shows.filter(show => show.languages.includes('en'));
-    const nonEnglishShows = shows.filter(show => !show.languages.includes('en'));
-
-    // Concatenates English shows first
-    const sortedShows = [...englishShows, ...nonEnglishShows];
-
-    return NextResponse.json(sortedShows);
+    return NextResponse.json(shows);
   } catch (error) {
     console.error('[SHOWS_GET]', error);
     return new NextResponse('Internal Error!', { status: 500 });
