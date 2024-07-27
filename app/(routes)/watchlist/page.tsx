@@ -24,7 +24,7 @@ const Watchlist = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 px-16">
                 {watchlist.items.map((item) => (
-                    <TVShowCard data={item} showId={item.id}/>
+                    <TVShowCard data={item} key={item.id} showId={item.id}/>
                 ))} 
             </div>
 
