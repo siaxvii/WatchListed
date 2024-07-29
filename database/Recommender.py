@@ -81,20 +81,6 @@ class EnhancedShowModel(tfrs.Model):
 enhanced_model = EnhancedShowModel()
 enhanced_model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001))
 
-early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
-history = enhanced_model.fit(tf_train_dataset, validation_data=tf_val_dataset, epochs=29, callbacks=[early_stopping])
-
-import matplotlib.pyplot as plt
-
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.title('Model Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.legend()
-plt.show()
-
-
 def recommend_shows(selected_show_names, user_genre_preferences):
     selected_show_features = np.array([get_additional_features(show_name) for show_name in selected_show_names])
     query = {
