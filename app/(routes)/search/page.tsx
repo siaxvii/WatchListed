@@ -50,7 +50,7 @@ const SearchResults: React.FC = () => {
     return (
         <div className="min-h-screen text-white flex flex-col bg-gradient-to-r from-[#1B1919] to-[#090909] p-10">
             <h1 className="text-2xl font-semibold mb-4 ml-4">
-                {loading ? <Spinner size="large" /> : `${searchResults.length} search results for &quot;${query}&quot;`}
+                {loading ? <Spinner size="large" /> : `${searchResults.length} search results for "${query}"`}
             </h1>
 
             {searchResults.length === 0 && !loading ? (

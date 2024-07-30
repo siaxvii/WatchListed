@@ -53,7 +53,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
   const isInWatchlist = watchlist.items.some(item => item.id === data.id);
 
   return (
-    <div className="relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 group hover:opacity-50">
+    <Link href={`/show/${showId}`} className="block relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 group hover:opacity-50">
       <div className="gap-x-6 pb-2 absolute w-full flex justify-center bottom-28 opacity-0 group-hover:opacity-100 z-20">
       {!isInWatchlist && (
         <HoverCard>
@@ -106,8 +106,9 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
           WatchListed Rating: {show.watchlistedrating.toFixed(2)}/10
         </p>
       </div>
-    </div>
+    </Link>
   );
+  
 };
 
 export default TVShowCard;
