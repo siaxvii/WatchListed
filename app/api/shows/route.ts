@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const genre = searchParams.get('genre') || undefined;
     const search = searchParams.get('search') || undefined;
 
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = parseInt(searchParams.get('limit') || '30');
     const page = parseInt(searchParams.get('page') || '1');
 
     const whereClause: any = {

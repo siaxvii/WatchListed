@@ -23,12 +23,14 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
   const watchlist = useWatchlist();
 
   const onSaveToWatchList: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     e.stopPropagation();
 
     watchlist.addItem(data);
   }
 
   const onRemoveFromWatchList: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     
     watchlist.removeItem(data.id);

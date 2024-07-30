@@ -1,7 +1,7 @@
 "use client";
 
 import { BiSearch } from 'react-icons/bi';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import getShows from '@/actions/get-shows';
 
@@ -9,6 +9,7 @@ const SearchBar: React.FC = () => {
     const router = useRouter();
     const [query, setQuery] = useState<string>('');
     const [searchResults, setSearchResults] = useState<any[]>([]);
+    const searchBarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchFilteredShows = async () => {
@@ -38,8 +39,8 @@ const SearchBar: React.FC = () => {
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleSearch();
-            setQuery('');
             setSearchResults([]);
+            setQuery('');
         }
     };
 
@@ -47,11 +48,25 @@ const SearchBar: React.FC = () => {
         setQuery('');
         setSearchResults([])
         router.push(`/show/${show.id}`);
-        setSearchResults([]);
     };
 
+
+    //Closes suggested search results when clicking outside the search bar
+    const handleClickOutside = (event: MouseEvent) => {
+        if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+            setSearchResults([]);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className="relative">
+        <div className="relative" ref={searchBarRef}>
             <div className="flex items-center bg-black p-2 border border-white rounded-md">
                 <input
                     value={query}
