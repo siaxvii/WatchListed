@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['image.tmdb.org'], // Add external domains here
+      remotePatterns: [ { hostname: 'image.tmdb.org'} ], //"domains" is deprecated, uses remotePatterns instead
     },
   };
 export default nextConfig;
