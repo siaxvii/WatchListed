@@ -14,7 +14,7 @@ const Genres: React.FC = () => {
   const [loading, setLoading] = useState(false);
   //const [genres, setGenres] = useState<string[]>([]);
   
-  const genres = ["Action", "Comedy", "Drama", "Crime", "Horror", "Fantasy", "Sci-Fi", "Thriller"];
+  const genres = ["Animation", "Action", "Comedy", "Crime", "Drama", "Family", "Kids", "Sci-Fi", "War & Politics"];
   
   useEffect(() => {
     const fetchShows = async () => {
