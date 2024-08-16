@@ -1,40 +1,42 @@
 "use client";
+//^ this makes sure that it'll be executed on client/browser side instead of server side
 import React, { useEffect, useState } from "react";
 import TVShowCard from "@/components/TvShowCard";
 import getShows from "@/actions/get-shows";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
-// importing button to be consistent with the Genre page design 
+// importing button to be consistent with the other pages button design 
 
-
+//React component
+//React.FC for functional component
 const Genres: React.FC = () => {
+  //Initiliaze the states w/useState
+  //1) stores tv shows by genres in an object, and each genre is gonna map to an array of shows.
   const [tvShowsByGenre, setTvShowsByGenre] = useState<Record<string, any[]>>({});
+  //2) selectedGenre represents the current genres users selected. It'll first be set to all shows
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>("all");
+  //3) page is for the pg number for fetching results
   const [page, setPage] = useState(1);
+  //4) the loading boolean is to see whether or not data is being fetched from API
   const [loading, setLoading] = useState(false);
-  //const [genres, setGenres] = useState<string[]>([]);
-  
+  // Here we have the genres that are most prominent in the database so I defined them here and users can select from these.
   const genres = ["Animation", "Action", "Comedy", "Crime", "Drama", "Family", "Kids", "Sci-Fi", "War & Politics"];
   
+
+  //useEffect is the hook that runs fetchshows() when we change the genre 
+  //  as well as when page changes (aka we load more shows)
   useEffect(() => {
     const fetchShows = async () => {
       setLoading(true);
       try {
-        //const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genres`);
-        //const genresData = await res.json();
-        //const genresList = genresData.map((genreObj: { genres: string }) => genreObj.genres);
-
-        //setGenres(genresList);
-
-        //const showsByGenre: Record<string, any[]> = {};
-
+        // here is where we call getShows and if the genre "all" is selected, we'll just show all the shows/movies
         const newShows = await getShows({
           genre: selectedGenre === "all" ? undefined : selectedGenre,
           limit: 10,
           page,
         });
 
-
+        //here we append the new shows to the ones we've already fetched from a genre
         setTvShowsByGenre((prevShowsByGenre) => ({
           ...prevShowsByGenre,
           [selectedGenre!]: [...(prevShowsByGenre[selectedGenre!] || []), ...newShows],
@@ -42,6 +44,7 @@ const Genres: React.FC = () => {
       } catch (error) {
         console.error("Error fetching shows: ", error);
       } finally {
+        //We set loading to false when we're done fetching
         setLoading(false);
       }
     };
@@ -49,19 +52,28 @@ const Genres: React.FC = () => {
   }, [page, selectedGenre]);
 
 
+  //This function increments page state by 1, for when we have to load more shows
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
 
+
+  //
   const handleGenreChange = (genre : string) => {
+    //here we updated selected genre
     setSelectedGenre(genre);
+    //reset the page to 1 page
     setPage(1);
+    
+    //Here we make sure that tvShowsByGenre state is updated by a. using existing shows for the selected genre or 
+    //  b. intializing an empty array if no shows were able to be fetched for the specific genre selected.
     setTvShowsByGenre((prevShowsByGenre) => ({
       ...prevShowsByGenre,
       [genre]: prevShowsByGenre[genre] || [],
     }));
   };
 
+  //showsToDisplay defines the list of shows to display on the screen based of the selectedGenre
   const showsToDisplay = selectedGenre ? tvShowsByGenre[selectedGenre] || [] : [];
 
   return (
@@ -125,11 +137,4 @@ const Genres: React.FC = () => {
   );
 }
 
-
-
-      
-
-/*
-So basically, have buttons for each genre
-*/
 export default Genres;
