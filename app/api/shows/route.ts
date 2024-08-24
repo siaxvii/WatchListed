@@ -8,11 +8,25 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+    const IDsParam = searchParams.get('ids');
     const genre = searchParams.get('genre') || undefined;
     const search = searchParams.get('search') || undefined;
 
     const limit = parseInt(searchParams.get('limit') || '30');
     const page = parseInt(searchParams.get('page') || '1');
+
+    //URL Example: api/shows?ids=1,2,3
+    if (IDsParam) {
+      const ids = IDsParam.split(',').map(id => parseInt(id.trim()));
+
+      const shows = await prismadb.show.findMany({
+        where: {
+          id: { in: ids }
+        }
+      });
+
+      return NextResponse.json(shows);
+    }
 
     const whereClause: any = {
       ...(genre && { genres: { has: genre } }),
