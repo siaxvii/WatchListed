@@ -6,7 +6,7 @@ import numpy as np
 from fuzzywuzzy import process
 
 
-def load_data(shows_path='final.csv', ratings_path='ratings.csv'):
+def load_data(shows_path='venv/final.csv', ratings_path='venv/ratings.csv'):
     try:
         shows = pd.read_csv(shows_path)
         ratings = pd.read_csv(ratings_path)
@@ -15,10 +15,8 @@ def load_data(shows_path='final.csv', ratings_path='ratings.csv'):
         return None, None
     return shows, ratings
 
-
 def clean_text(text):
     return re.sub("[^a-zA-Z0-9\s]", "", text).lower()
-
 
 def prepare_data(shows):
     shows = shows.dropna(subset=["genres"])
@@ -81,7 +79,7 @@ def get_recommendations(title, shows, tfidf):
     results['similarity'] = similarity[similar_indices]
     results = results.sort_values('similarity', ascending=False)
 
-    return results[['name', 'genres', 'languages', 'similarity']]
+    return results[['id', 'similarity']]
 
 
 def main():
@@ -111,8 +109,7 @@ def main():
             all_recommendations = pd.concat([all_recommendations, recommendations])
 
     if not all_recommendations.empty:
-        all_recommendations = all_recommendations.drop_duplicates(subset=['name']).sort_values('similarity',
-                                                                                               ascending=False)
+        all_recommendations = all_recommendations.drop_duplicates(subset=['name']).sort_values('similarity', ascending=False)
         top_recommendations = all_recommendations.head(10)
         print(top_recommendations[['name', 'genres', 'languages']])
     else:
