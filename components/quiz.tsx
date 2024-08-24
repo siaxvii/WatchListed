@@ -74,6 +74,7 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
       localStorage.setItem('quiz', JSON.stringify(
         selectedShows.map(show => show.name)
       ));
+      localStorage.removeItem('recommendations');
       onQuizComplete();
       router.push('/recommended');
       return toast.success('Quiz successfully submitted!');

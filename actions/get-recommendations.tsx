@@ -4,7 +4,6 @@ import { Show } from "@/types";
 import getShowsByIDs from "./get-shows-by-ids";
 
 const getRecommendations = async (quiz: String[]): Promise<Show[]> => {
-    console.log(JSON.stringify(quiz));
   
     const res = await fetch(`${process.env.RECOMMENDATIONS_API_URL}`, {
         method: 'POST',
