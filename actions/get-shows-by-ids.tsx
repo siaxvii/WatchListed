@@ -1,3 +1,4 @@
+// Queries all shows endpoint with a list of show IDs
 import { Show } from "@/types";
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/shows`;

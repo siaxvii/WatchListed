@@ -1,3 +1,4 @@
+// Displays recommended shows based on the user's quiz results
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import RecommendedShowCard from "@/components/RecommendedShowCard";
 
 export default function Recommended() {
   const [allShows, setAllShows] = useState<any[]>([]);
-  const [visibleShows, setVisibleShows] = useState<any[]>([]); // State for currently visible shows
+  const [visibleShows, setVisibleShows] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -19,12 +20,11 @@ export default function Recommended() {
         if (storedRecommendations) {
           const recommendations = JSON.parse(storedRecommendations);
           setAllShows(recommendations);
-          setVisibleShows(recommendations.slice(0, 3)); // Show the first 3 shows initially
+          setVisibleShows(recommendations.slice(0, 3));
           setLoading(false);
           return;
         }
 
-        // Check if quiz data exists in localStorage
         const quizData = localStorage.getItem('quiz');
 
         // If the quiz data exists, clear the old recommendations and fetch new ones
@@ -40,8 +40,10 @@ export default function Recommended() {
 
           // Store new recommendations in localStorage
           localStorage.setItem('recommendations', JSON.stringify(recommendations));
-          
+
           setAllShows(recommendations);
+          window.location.reload();  // Reloads the page to show the new recommendations
+
         } else if (storedRecommendations) {
           // If quiz data is missing but recommendations exist in cache, use cached recommendations
           setAllShows(JSON.parse(storedRecommendations));
@@ -74,7 +76,7 @@ export default function Recommended() {
   return (
     <div className="min-h-screen flex flex-col text-white bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <div className="flex flex-col items-center justify-center mt-10">
-        <h1 className="text-4xl font-bold text-center mb-20"> Top Picks For You </h1>
+        <h1 className="text-4xl font-bold text-center mb-20"> {loading ? "Curating Your Personal WatchList..." : "Top Picks For You"} </h1>
         <div className="grid grid-cols-3 gap-6 px-16 mr-10">
           {visibleShows.map(show => (
             <div key={show.id} className="w-60 cursor-pointer">

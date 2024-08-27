@@ -1,3 +1,4 @@
+// Fetches recommendations from the recommendations API based on the quiz answers
 'use server'
 
 import { Show } from "@/types";

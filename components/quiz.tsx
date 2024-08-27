@@ -1,3 +1,4 @@
+// Quiz component for user to fill out to receive show recommendations
 "use client";
 
 import React, { useState, useEffect } from 'react';

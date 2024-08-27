@@ -1,3 +1,4 @@
+// Card component for recommended shows
 "use client";
 
 import React, { useState, MouseEventHandler } from "react";
