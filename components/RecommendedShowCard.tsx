@@ -7,7 +7,7 @@ import Link from "next/link";
 import { IoBookmarkSharp } from "react-icons/io5";
 import useWatchlist from "@/actions/use-watchlist";
 import { Show } from "@/types";
-import { Bookmark, X } from "lucide-react";
+import { Bookmark, X, ThumbsDown } from "lucide-react";
 import IconButton from "./ui/icon-button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
@@ -49,7 +49,7 @@ const RecommendedShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank, on
   };
 
   return (
-    <Link href={`/show/${showId}`} className="block relative w-60 m-4 bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-opacity duration-300 group hover:opacity-50">
+    <Link href={`/show/${showId}`} className="block relative w-60 m-4 bg-zinc-800 overflow-visible rounded-lg shadow-lg hover:scale-105 transition-opacity duration-300 group hover:opacity-50">
       <div className="gap-x-6 pb-2 absolute w-full flex justify-center bottom-28 opacity-0 group-hover:opacity-100 z-20">
       {!isInWatchlist && (
         <HoverCard>
@@ -83,11 +83,11 @@ const RecommendedShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank, on
             <HoverCardTrigger>
                 <IconButton
                   onClick={onRemoveFromRecommended}
-                  icon={<X size={25} className="text-gray-800" />}
+                  icon={<ThumbsDown size={25} className="text-gray-800" />}
                 />
             </HoverCardTrigger>
             <HoverCardContent>
-              Remove From Recommended
+              Not Interested
             </HoverCardContent>
           </HoverCard>
       </div>

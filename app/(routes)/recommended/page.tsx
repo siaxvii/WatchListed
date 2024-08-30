@@ -77,7 +77,7 @@ export default function Recommended() {
     <div className="min-h-screen flex flex-col text-white bg-gradient-to-r from-[#1B1919] to-[#090909]">
       <div className="flex flex-col items-center justify-center mt-10">
         <h1 className="text-4xl font-bold text-center mb-20"> {loading ? "Curating Your Personal WatchList..." : "Top Picks For You"} </h1>
-        <div className="grid grid-cols-3 gap-6 px-16 mr-10">
+        <div className="grid grid-cols-3 gap-10 px-16 mr-10">
           {visibleShows.map(show => (
             <div key={show.id} className="w-60 cursor-pointer">
               <RecommendedShowCard data={show} showId={show.id} onRemove={handleRemove}/>
