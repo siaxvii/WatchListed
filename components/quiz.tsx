@@ -1,3 +1,4 @@
+// Quiz component for user to fill out to receive show recommendations
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -39,7 +40,6 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
   }, [query]);
 
   useEffect(() => {
-    //Checks if all required fields are completed
     setIsFormComplete(
       genres.length > 0 &&
       length !== '' &&
@@ -72,9 +72,12 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
 
   const handleSubmit = async () => {
     if (isFormComplete) {
-      console.log({ genres, length, selectedShows });
+      localStorage.setItem('quiz', JSON.stringify(
+        selectedShows.map(show => show.name)
+      ));
+      localStorage.removeItem('recommendations');
       onQuizComplete();
-      router.push('/');
+      router.push('/recommended');
       return toast.success('Quiz successfully submitted!');
     } else {
       toast.error('Complete all fields before submitting.');

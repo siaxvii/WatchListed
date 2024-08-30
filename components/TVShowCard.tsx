@@ -4,7 +4,6 @@ import React, { useState, useEffect, MouseEventHandler } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IoBookmarkSharp } from "react-icons/io5";
-import getShow from "@/actions/get-show";
 import useWatchlist from "@/actions/use-watchlist";
 import { Show } from "@/types";
 import { Bookmark, X } from "lucide-react";
@@ -18,7 +17,6 @@ interface TVShowCardProps {
 }
 
 const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
-  const [show, setShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
   const watchlist = useWatchlist();
 
@@ -36,21 +34,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
     watchlist.removeItem(data.id);
   };
 
-  useEffect(() => {
-    const fetchShow = async () => {
-      try {
-        const showData = await getShow(showId);
-        setShow(showData);
-      } catch (err) {
-        setError("Failed to fetch show details.");
-      }
-    };
-
-    fetchShow();
-  }, [showId]);
-
   if (error) return <p>{error}</p>;
-  if (!show) return null;
 
   const isInWatchlist = watchlist.items.some(item => item.id === data.id);
 
@@ -94,7 +78,7 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
       )}
       <div className="relative w-full h-72 top-0">
         <Image
-          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${show.backgroundpath}`}
+          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.backgroundpath}`}
           alt=""
           layout="fill"
           objectFit="cover"
@@ -102,10 +86,10 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ data, showId, rank }) => {
       </div>
       <div className="p-4 text-center">
         <Link href={`/show/${showId}`} className="text-white text-lg font-semibold">
-          {show.name}
+          {data.name}
         </Link>
         <p className="text-yellow-400 text-sm mt-1 font-bold text-center">
-          WatchListed Rating: {show.watchlistedrating.toFixed(2)}/10
+          WatchListed Rating: {data.watchlistedrating.toFixed(2)}/10
         </p>
       </div>
     </Link>
