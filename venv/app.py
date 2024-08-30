@@ -46,7 +46,7 @@ async def recommend_shows(shows: list[str]):
     if all_recommendations.empty:
         return {"error": f"No recommendations found for the shows entered: {', '.join(shows)}"}
     
-    top_recommendations = all_recommendations.sort_values('similarity', ascending=False).head(10)
+    top_recommendations = all_recommendations.sort_values('similarity', ascending=False).head(30)
 
     # Convert DataFrame to a list of dictionaries for JSON serialization
     recommendations_list = top_recommendations['id'].tolist()
