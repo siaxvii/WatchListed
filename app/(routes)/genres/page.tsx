@@ -109,6 +109,7 @@ const Genres: React.FC = () => {
                 showsToDisplay.map((show) => 
                   show && show.id ? (
                     <TVShowCard
+                      data={show}
                       key={show.id}
                       showId={show.id}
                     />
