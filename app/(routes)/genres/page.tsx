@@ -1,7 +1,7 @@
 "use client";
 //^ this makes sure that it'll be executed on client/browser side instead of server side
 import React, { useEffect, useState } from "react";
-import TVShowCard from "@/components/TvShowCard";
+import TVShowCard from "@/components/TVShowCard";
 import getShows from "@/actions/get-shows";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TVShowCard from "@/components/TvShowCard";
+import TVShowCard from "@/components/TVShowCard";
 import getShows from "@/actions/get-shows";
 import { Spinner } from '@/components/ui/spinner';
 
