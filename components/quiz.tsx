@@ -1,41 +1,51 @@
+// Quiz component for user to fill out to receive show recommendations
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Input from "@/components/ui/input";
 import TVShowCard from "@/components/TVShowCard";
+import toast from 'react-hot-toast';
+import getShows from '@/actions/get-shows';
+import { Show } from '@/types';
 
 interface QuizProps {
-  onQuizComplete: () => void; //callback prop
+  onQuizComplete: () => void;
 }
 
 const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
   const router = useRouter();
   const [genres, setGenres] = useState<string[]>([]);
   const [length, setLength] = useState<string>('');
-  const [selectedShows, setSelectedShows] = useState<any[]>([]);
-  const [allShows, setAllShows] = useState<any[]>([]);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedShows, setSelectedShows] = useState<Show[]>([]);
+  const [searchResults, setSearchResults] = useState<Show[]>([]);
+  const [isFormComplete, setIsFormComplete] = useState<boolean>(false);
   const [query, setQuery] = useState<string>('');
 
   useEffect(() => {
-    axios.get('/api/shows')
-      .then(response => setAllShows(response.data))
-      .catch(error => console.error(error));
-  }, []);
+    const fetchFilteredShows = async () => {
+      if (query.trim() !== "") {
+        try {
+          const filteredShows = await getShows({ search: query, limit: 10 });
+          setSearchResults(filteredShows);
+        } catch (error) {
+          console.error('Error fetching filtered shows:', error);
+        }
+      } else {
+        setSearchResults([]);
+      }
+    };
+
+    fetchFilteredShows();
+  }, [query]);
 
   useEffect(() => {
-    if (query.trim() !== "") {
-      setSearchResults(
-        allShows.filter(show => 
-          show.name.toLowerCase().includes(query.toLowerCase()))
-          .slice(0, 10)
-      );
-    } else {
-      setSearchResults([]);
-    }
-  }, [query, allShows]);
+    setIsFormComplete(
+      genres.length > 0 &&
+      length !== '' &&
+      selectedShows.length >= 3
+    );
+  }, [genres, length, selectedShows]);
 
   const handleGenreChange = (genre: string) => {
     setGenres((prev) => prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]);
@@ -45,22 +55,33 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
     setLength(event.target.value);
   };
 
-  const handleShowSelect = (show: any) => {
-    setSelectedShows((prev) =>
-      prev.includes(show)
-        ? prev.filter((s) => s !== show)
-        : prev.length < 20
-        ? [...prev, show]
-        : prev
-    );
+  const handleShowSelect = (show: Show) => {
+    setSelectedShows((prev) => {
+        if (prev.find((s) => s.id === show.id)) {
+            return prev.filter((s) => s.id !== show.id);
+        } else if (prev.length < 3) {
+            return [...prev, show];
+        } else {
+            return prev;
+        }
+    });
+
     setQuery('');
     setSearchResults([]);
-  };
+};
 
   const handleSubmit = async () => {
-    console.log({ genres, length, selectedShows });
-    onQuizComplete();
-    router.push('/');
+    if (isFormComplete) {
+      localStorage.setItem('quiz', JSON.stringify(
+        selectedShows.map(show => show.name)
+      ));
+      localStorage.removeItem('recommendations');
+      onQuizComplete();
+      router.push('/recommended');
+      return toast.success('Quiz successfully submitted!');
+    } else {
+      toast.error('Complete all fields before submitting.');
+    }
   };
 
   return (
@@ -83,7 +104,7 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
       <div className="mb-4">
         <h3 className="text-xl font-semibold pb-4 pt-4">2. What is your preferred length for TV shows?</h3>
         <div className="flex flex-col gap-2 mt-2 ml-2">
-          {['  Limited Series (no longer than one season)', '  1-3 Seasons', '  3+ Seasons', '  Doesn’t matter to me!'].map((option) => (
+          {['Limited Series (no longer than one season)', '1-3 Seasons', '3+ Seasons', 'Doesn’t matter to me!'].map((option) => (
             <label key={option} className="block">
               <input
                 type="radio"
@@ -129,7 +150,7 @@ const Quiz: React.FC<QuizProps> = ({ onQuizComplete }) => {
               className="w-60 cursor-pointer"
               onClick={() => handleShowSelect(show)} //Removes card if you click on it
             >
-              <TVShowCard showId={show.id} />
+              <TVShowCard data={show} showId={show.id} />
             </div>
           ))}
         </div>

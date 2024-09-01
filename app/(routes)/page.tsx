@@ -38,11 +38,11 @@ export default function HomePage() {
           </h3>
           <div className="h-1"></div>
           <h4 className="text-md mt-6">
-            Discover your next favorite TV show <br /> with WatchListed. Whether you're a <br /> binge-watcher or a casual viewer, <br /> WatchListed curates a tailored list of <br /> must-watch content based on your <br /> unique tastes. Simply input your <br /> top three favorite shows, and let our <br /> advanced algorithms do the rest. <br />
+            Discover your next favorite TV show <br /> with WatchListed. Whether you&apos;re a <br /> binge-watcher or a casual viewer, <br /> WatchListed curates a tailored list of <br /> must-watch content based on your <br /> unique tastes. Simply input your <br /> top three favorite shows, and let our <br /> advanced algorithms do the rest. <br />
           </h4>
           <div className="h-1"></div>
           <div className="flex-col space-x-8"> 
-            <Button variant="default" className="hover:shadow-zinc-800 transition-shadow duration-300 ease-in-out hover:shadow-lg transform hover:scale-105 hover:shadow-lg" onClick={handleReadMoreClick}>Read More</Button>
+            <Button variant="default" className="hover:shadow-cyan-800 transition-shadow duration-300 ease-in-out hover:shadow-lg transform hover:scale-105 hover:shadow-lg" onClick={handleReadMoreClick}>Read More</Button>
             <Button variant="default" className="hover:shadow-cyan-800 transition-shadow duration-300 ease-in-out hover:shadow-lg transform hover:scale-105 hover:shadow-lg" onClick={handleStartNowClick}> Start now! </Button>
           </div>
         </div>
