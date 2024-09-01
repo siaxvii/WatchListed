@@ -46,7 +46,7 @@ export default function More() {
           </ul>
         </div>
         <div className="flex justify-center mt-16 p-4">
-          <button onClick={handleStartNowClick} className="px-14 py-2 bg-zinc-900 hover:shadow-cyan-800 transition-shadow duration-300 ease-in-out hover:shadow-lg transform hover:scale-105 hover:shadow-lg border border-white text-white rounded-md">
+          <button onClick={handleStartNowClick} className="px-14 py-2 bg-zinc-900 hover:shadow-amber-400 transition-shadow duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg border border-white text-white rounded-md">
             Sign Up!
           </button>
         </div>
