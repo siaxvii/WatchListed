@@ -7,6 +7,7 @@ import RecommendedShowCard from "@/components/RecommendedShowCard";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 export default function Recommended() {
   const [allShows, setAllShows] = useState<any[]>([]);
@@ -69,18 +70,20 @@ export default function Recommended() {
     };
 
     fetchRecommendations();
-  }, [user]); // Added isSignedIn as a dependency to refetch recommendations if sign-in status changes
+  }, [user]); // Added user as a dependency to refetch recommendations if sign-in status changes
 
   const handleRemove = (id: number) => {
     // Filter out the show with the given ID
     const updatedShows = allShows.filter(show => show.id !== id);
     setAllShows(updatedShows);
-
+    
     // Update the recommendations in localStorage
     localStorage.setItem("recommendations", JSON.stringify(updatedShows));
     // Update visible shows
     const nextVisibleShows = updatedShows.slice(0, 3); // Get the next 3 shows
     setVisibleShows(nextVisibleShows);
+
+    return toast.success("Removed from Recommendations!");
   };
 
   const handleStartNowClick = () => {
@@ -88,28 +91,36 @@ export default function Recommended() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-white bg-gradient-to-r from-[#1B1919] to-[#090909]">
-      <div className="flex flex-col items-center justify-center mt-10">
-        <h1 className="text-4xl font-bold text-center mb-20">
+    <div className="h-screen flex flex-col text-white bg-gradient-to-r from-[#1B1919] to-[#090909]">
+      <div className="h-3/5 flex flex-col items-center justify-center mt-10">
+        <h1 className="text-4xl font-bold text-center mb-20 mt-20">
           {loading 
             ? "Curating Your Personal WatchList..." 
-            : user 
+            : user && allShows.length > 0  
               ? "Top Picks For You" 
-              : 
-              <div className="mt-12">
-                <h1> Sign in to view recommended shows! </h1>
-                <Button variant="default" className="mt-12 hover:shadow-amber-400 transition-shadow duration-300 ease-in-out hover:shadow-md transform hover:scale-105" onClick={handleStartNowClick}> Start now! </Button>
-              </div>
+              : !user
+              ? <div className="mt-12">
+                  <h1> Sign in to view recommended shows! </h1>
+                    <Button variant="default" className="mt-12 hover:shadow-amber-400 transition-shadow duration-300 ease-in-out hover:shadow-md transform hover:scale-105" onClick={handleStartNowClick}> Start now! </Button>
+                  </div>
+              : null
           }
         </h1>
         {user && (
-          <div className="grid grid-cols-3 gap-10 px-16 mr-10">
-            {visibleShows.map(show => (
-              <div key={show.id} className="w-60 cursor-pointer">
-                <RecommendedShowCard data={show} showId={show.id} onRemove={handleRemove} />
+          <>
+            <div className="grid grid-cols-3 gap-10 px-16 mr-10">
+              {visibleShows.map(show => (
+                <div key={show.id} className="w-60 cursor-pointer">
+                  <RecommendedShowCard data={show} showId={show.id} onRemove={handleRemove} />
+                </div>
+              ))}
+            </div>
+            {allShows.length === 0 && !loading && (
+              <div className="flex h-full items-center justify-center text-3xl">
+                <h3> Resubmit quiz results for more recommendations! </h3>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
         {loading && <Spinner size="large" />}
       </div>
